@@ -390,6 +390,7 @@ noremap Y y$
 " where possible also have <F4> do this both in normal and insert mode:
 nnoremap \tp :set invpaste paste?<CR>
 
+let g:marked_app = "/Applications/Marked\ 2.app/Contents/MacOS/Marked\ 2"
 nnoremap <silent> \mo :MarkedOpen<CR>
 
 " have \th ("toggle highlight") toggle highlighting of search matches, and
