@@ -1,5 +1,7 @@
 " .vimrc
 
+set shell=/bin/zsh
+
 set nocompatible
 filetype off
 
@@ -42,6 +44,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'matthewsimo/angular-vim-snippets'
 Plugin 'claco/jasmine.vim'
+Plugin 'majutsushi/tagbar'
 
 if fresh_install == 1
     echo "Installing Bundles"
@@ -56,6 +59,11 @@ let g:airline_powerline_fonts=1
 let g:airline_enable_fugitive=1
 let g:airline_enable_syntastic=1
 let g:airline_theme='dark'
+"let g:airline_left_sep = '⮀'
+"let g:airline_right_sep = '⮂'
+"let g:airline_linecolumn_prefix = '⭡'
+"let g:airline_fugitive_prefix = '⭠ '
+"let g:airline_paste_symbol = 'ρ'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -64,6 +72,9 @@ let Tlist_WinWidth = 45
 
 let g:netrw_sort_options="i"
 let g:netrw_keepdir=1
+
+let g:tagbar_tmp_shell = 0
+let g:tagbar_single_click = 1
 
 " set END behavior
 "noremap  <expr> [4~  (col('.') == match(getline('.'),    '\s*$')   ? '$'  : 'g_')
@@ -221,8 +232,7 @@ vnoremap < <gv
 
 " normally don't automatically format `text' as it is typed, IE only do this
 " with comments, at 79 characters:
-set formatoptions-=tl
-set formatoptions+=crqn
+set formatoptions=crqn
 set textwidth=80
 
 " get rid of the default style of C comments, and define a style with two stars
@@ -294,12 +304,17 @@ autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
 
 " Go
+au FileType go nmap <Leader>gs <Plug>(go-implements)
 au FileType go nmap <Leader>gi <Plug>(go-info)
 au FileType go nmap <leader>gr <Plug>(go-run)
-au FileType go nmap <leader>gb <Plug>(go-build)
+au FileType go nmap <Leader>gb <Plug>(go-doc)
 "au FileType go nmap <leader>gt <Plug>(go-test)
 au FileType go nmap <Leader>gd <Plug>(go-def-tab)
+au FileType go nmap <leader>gc <Plug>(go-coverage)
+au FileType go nmap <Leader>ge <Plug>(go-rename)
 au FileType go nmap gd <Plug>(go-def)
+
+let g:go_fmt_command = "goimports"
 
 " * Search & Replace
 
