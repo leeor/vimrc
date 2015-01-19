@@ -6,4 +6,4 @@ set columns=211
 
 set guioptions=gmr
 
-au FileType go TagbarToggle
+au FileType go TagbarOpen
