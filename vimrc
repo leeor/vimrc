@@ -45,6 +45,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'matthewsimo/angular-vim-snippets'
 Plugin 'claco/jasmine.vim'
 Plugin 'majutsushi/tagbar'
+Plugin 'wincent/command-t'
 
 if fresh_install == 1
     echo "Installing Bundles"
