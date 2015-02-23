@@ -1,4 +1,4 @@
-set guifont=Monaco:h10
+set guifont=Sauce\ Code\ Powerline:h10
 set noantialias
 
 set lines=53
