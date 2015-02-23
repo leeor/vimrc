@@ -5,6 +5,9 @@ set shell=/bin/zsh
 set nocompatible
 filetype off
 
+" never, ever, go into Ex mode
+nnoremap Q <nop>
+
 " first clear any existing autocommands:
 autocmd!
 
