@@ -40,12 +40,11 @@ Plugin 'jngeist/vim-multimarkdown'
 Plugin 'fatih/vim-go'
 Plugin 'pangloss/vim-javascript'
 Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'matthewsimo/angular-vim-snippets'
 Plugin 'claco/jasmine.vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'wincent/command-t'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'MattesGroeger/vim-bookmarks'
+Plugin 'sjl/vitality.vim'
 
 if fresh_install == 1
     echo "Installing Bundles"
@@ -60,14 +59,7 @@ let g:airline_powerline_fonts=1
 let g:airline_enable_fugitive=1
 let g:airline_enable_syntastic=1
 let g:airline_theme='dark'
-"let g:airline_left_sep = '⮀'
-"let g:airline_right_sep = '⮂'
-"let g:airline_linecolumn_prefix = '⭡'
-"let g:airline_fugitive_prefix = '⭠ '
-"let g:airline_paste_symbol = 'ρ'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
 
 let Tlist_WinWidth = 45
 
@@ -138,10 +130,6 @@ set undoreload=10000
 " allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
 set backspace=eol,start,indent
-
-set relativenumber
-autocmd InsertEnter * :set number
-autocmd InsertLeave * :set relativenumber
 
 function! g:vimrc_goyo_before()
     autocmd! WinLeave *
@@ -227,10 +215,6 @@ set smarttab
 vnoremap > >gv
 vnoremap < <gv
 
-" show the bottom 'status bar'
-"set ruler
-"set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-
 " normally don't automatically format `text' as it is typed, IE only do this
 " with comments, at 79 characters:
 set formatoptions=crqn
@@ -245,10 +229,8 @@ set comments+=s:/*,mb:**,ex:*/
 set comments+=fb:*
 
 " treat lines starting with a quote mark as comments (for `Vim' files, such as
-" this very one!), and colons as well so that reformatting usenet messages from
-" `Tin' users works OK:
+" this very one!).
 set comments+=b:\"
-set comments+=n::
 
 " * Text Formatting -- Specific File Formats
 
@@ -260,19 +242,10 @@ highlight diffRemoved guifg=#bf0000
 
 set lazyredraw
 
-"highlight Comment ctermbg=0 ctermfg=2
-"highlight TabLine ctermbg=7
-
 " enable filetype detection:
 filetype plugin indent on
 set autoindent
 set smartindent
-
-"set foldmethod=syntax
-"set foldlevel=0
-"set foldcolumn=1
-"set foldnestmax=3
-"set foldminlines=5
 
 augroup filetype
   autocmd BufNewFile,BufRead *.txt setlocal filetype=human
@@ -305,14 +278,14 @@ autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
 
 " Go
-au FileType go nmap <Leader>gs <Plug>(go-implements)
-au FileType go nmap <Leader>gi <Plug>(go-info)
+au FileType go nmap <leader>gs <Plug>(go-implements)
+au FileType go nmap <leader>gi <Plug>(go-info)
 au FileType go nmap <leader>gr <Plug>(go-run)
-au FileType go nmap <Leader>gb <Plug>(go-doc)
+au FileType go nmap <leader>gb <Plug>(go-doc)
 "au FileType go nmap <leader>gt <Plug>(go-test)
-au FileType go nmap <Leader>gd <Plug>(go-def-tab)
+au FileType go nmap <leader>gd <Plug>(go-def-tab)
 au FileType go nmap <leader>gc <Plug>(go-coverage)
-au FileType go nmap <Leader>ge <Plug>(go-rename)
+au FileType go nmap <leader>ge <Plug>(go-rename)
 au FileType go nmap gd <Plug>(go-def)
 
 let g:go_fmt_command = "goimports"
@@ -360,14 +333,14 @@ set infercase
 
 " scroll the window (but leaving the cursor in the same place) by a couple of
 " lines up/down with <Ins>/<Del> (like in `Lynx'):
-noremap [A <C-Y>
-noremap [B <C-E>
+noremap [A <C-A>
+noremap [B <C-X>
 
 " Cycle through tabs with Ctrl-Tab and Ctrl-Shift-Tab
-noremap [1;5I gt
-inoremap [1;5I gt
-noremap [1;6I gT
-inoremap [1;6I gT
+noremap <C-Tab> gt
+inoremap <C-Tab> gt
+noremap <C-S-Tab> gT
+inoremap <C-S-Tab> gT
 
 " Open a new tab with Ctrl-t
 nnoremap <C-t> :tabe .<CR>
@@ -418,15 +391,72 @@ nmap <leader>gV :Gitv! --all<cr>
 vmap <leader>gV :Gitv! --all<cr>
 nnoremap <silent> \gs :Gstatus<CR>
 
+" Unite configuration and mappings
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#default_action('file', 'tabswitch')
+call unite#custom#default_action('grep', 'tabswitch')
+call unite#custom#default_action('vim_bookmarks', 'tabswitch')
+nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
+nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
+nnoremap <leader>ac :<C-u>UniteWithCursorWord -no-quit grep:.<CR>
+let g:unite_source_grep_max_candidates = 200
+if executable('ack')
+    " Use ack in unite grep source.
+    let g:unite_source_grep_command = 'ack'
+    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -k -H --word-regexp'
+endif
+nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
+
+" vim-bookmarks configuration and mappings
+nmap <leader>bt :<C-u>BookmarkToggle<CR>
+nmap <leader>bi :<C-u>BookmarkAnnotate<CR>
+nmap <leader>ba :<C-u>BookmarkShowAll<CR>
+nmap <leader>bn :<C-u>BookmarkNext<CR>
+nmap <leader>bp :<C-u>BookmarkPrev<CR>
+nmap <leader>bc :<C-u>BookmarkClear<CR>
+nmap <leader>bx :<C-u>BookmarkClearAll<CR>
+
+let g:bookmark_no_default_key_mappings = 1
+let g:bookmark_manage_per_buffer = 1
+let g:bookmark_center = 1
+
+highlight SignColumn ctermbg=0
+highlight SignColumn ctermfg=4
+
+" Finds the Git super-project directory.
+function! g:BMBufferFileLocation(file)
+    let filename = 'vim-bookmarks'
+    let location = ''
+    if isdirectory(fnamemodify(a:file, ":p:h").'/.git')
+        " Current work dir is git's work tree
+        let location = fnamemodify(a:file, ":p:h")
+    else
+        " Look upwards (at parents) for a directory named '.git'
+        let location = finddir('.git', fnamemodify(a:file, ":p:h").'/.;').'/..'
+    endif
+    if len(location) > 0
+        return simplify(location.'/.'.filename)
+    else
+        return simplify(fnamemodify(a:file, ":p:h").'/.'.filename)
+    endif
+endfunction
+
+" relative/absolute line numbers
+set number
+set relativenumber
+autocmd InsertEnter * :set norelativenumber
+autocmd InsertLeave * :set relativenumber
+
 function! NumberToggle()
     if(&relativenumber == 1)
-        set number
+        set norelativenumber
     else
         set relativenumber
     endif
 endfunc
-nnoremap <silent> \n :call NumberToggle()<CR>
+nnoremap <silent> <leader>n :call NumberToggle()<CR>
 
+" bracket auto-closing
 function! AutocloseOn()
     inoremap { {}<left>
     inoremap ( ()<left>
@@ -446,6 +476,7 @@ nnoremap <silent> \cn :call AutocloseOn()<CR>
 nnoremap <silent> \cf :call AutocloseOff()<CR>
 call AutocloseOff()
 
+" trailing space cleanup
 nnoremap \rt :%s/[ \t]\+$//<CR>
 
 " when we reload, tell vim to restore the cursor to the saved position
@@ -462,6 +493,5 @@ function! AddHeaderGuard()
         call append(0, ["#ifndef " . guard, "#define " . guard])
         call append(line('$'), "#endif /* " . guard . " */")
     endif
-
 endfunction " AddHeaderGuard()
 nnoremap \hg :call AddHeaderGuard()<CR>
