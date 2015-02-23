@@ -130,6 +130,9 @@ set undodir=~/.vim/undos
 set undolevels=10000
 set undoreload=10000
 
+" Diffs
+set diffopt=filler,iwhite
+
 " allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
 set backspace=eol,start,indent
