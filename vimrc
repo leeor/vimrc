@@ -409,7 +409,7 @@ let g:unite_source_grep_max_candidates = 600
 if executable('ack')
     " Use ack in unite grep source.
     let g:unite_source_grep_command = 'ack'
-    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -k -H --word-regexp'
+    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp'
 endif
 nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
 
