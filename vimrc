@@ -432,13 +432,20 @@ highlight SignColumn ctermfg=4
 " Finds the Git super-project directory.
 function! g:BMBufferFileLocation(file)
     let filename = 'vim-bookmarks'
+    let current_loc = ''
     let location = ''
-    if isdirectory(fnamemodify(a:file, ":p:h").'/.git')
+    if expand("%") ==# ""
+        let current_loc = expand("%:p:h")
+    else
+        let current_loc = a:file
+    endif
+
+    if isdirectory(fnamemodify(current_loc, ":p:h").'/.git')
         " Current work dir is git's work tree
-        let location = fnamemodify(a:file, ":p:h")
+        let location = fnamemodify(current_loc, ":p:h")
     else
         " Look upwards (at parents) for a directory named '.git'
-        let location = finddir('.git', fnamemodify(a:file, ":p:h").'/.;').'/..'
+        let location = finddir('.git', fnamemodify(current_loc, ":p:h").'/.;').'/..'
     endif
     if len(location) > 0
         return simplify(location.'/.'.filename)
