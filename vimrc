@@ -1,5 +1,8 @@
 " .vimrc
 
+" a fix for any plugin that needs the locale to be set explicitly.
+let $LC_ALL="en_US.UTF-8"
+
 set shell=/bin/zsh
 
 set nocompatible
