@@ -463,7 +463,7 @@ noremap <leader>af :Autoformat<CR><CR>
 
 let g:formatprg_c = "astyle"
 let g:formatprg_cpp = g:formatprg_c
-let g:formatprg_args_c = '--style=attach --keep-one-line-blocks --keep-one-line-statements --add-brackets --indent=spaces=4 --attach-namespaces --indent-preproc-block --indent-preproc-define --indent-col1-comments --min-conditional-indent=0 --max-instatement-indent=120 --pad-oper --pad-header --align-pointer=name --break-closing-brackets --max-code-length=200 --break-after-logical'
+let g:formatprg_args_c = '--style=attach --keep-one-line-blocks --keep-one-line-statements --add-brackets --indent=spaces=4 --attach-namespaces --indent-preproc-block --indent-preproc-define --indent-col1-comments --min-conditional-indent=0 --max-instatement-indent=120 --unpad-paren --pad-oper --pad-header --align-pointer=name --break-closing-brackets --max-code-length=200 --break-after-logical'
 let g:formatprg_args_cpp = g:formatprg_args_c
 
 " relative/absolute line numbers
