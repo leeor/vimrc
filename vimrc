@@ -14,21 +14,11 @@ nnoremap Q <nop>
 " first clear any existing autocommands:
 autocmd!
 
-let fresh_install=0
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle.."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-    let fresh_install=1
-endif
-
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " Plugins
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/syntastic'
@@ -53,11 +43,7 @@ Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'sjl/vitality.vim'
 Plugin 'Chiel92/vim-autoformat'
 
-if fresh_install == 1
-    echo "Installing Bundles"
-    echo ""
-    :BundleInstall
-endif
+call vundle#end()
 
 set tabpagemax=100
 
