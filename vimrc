@@ -141,7 +141,7 @@ set diffopt=filler,iwhite
 " insertion, and over indentations:
 set backspace=eol,start,indent
 
-function! g:vimrc_goyo_before()
+function! g:Vimrc_goyo_before()
     autocmd! WinLeave *
     autocmd! WinEnter *
     autocmd! InsertEnter *
@@ -150,7 +150,7 @@ function! g:vimrc_goyo_before()
     set nocursorline
 endfunction
 
-function! g:vimrc_goyo_after()
+function! g:Vimrc_goyo_after()
     autocmd WinLeave * set nocursorline
     autocmd WinEnter * set cursorline
     autocmd InsertEnter * :set number
@@ -158,15 +158,15 @@ function! g:vimrc_goyo_after()
 endfunction
 
 if exists('g:goyo_before_callbacks')
-    let g:goyo_before_callbacks = g:goyo_before_callbacks + [ function('g:vimrc_goyo_before') ]
+    let g:goyo_before_callbacks = g:goyo_before_callbacks + [ function('g:Vimrc_goyo_before') ]
 else
-    let g:goyo_before_callbacks = [ function('g:vimrc_goyo_before') ]
+    let g:goyo_before_callbacks = [ function('g:Vimrc_goyo_before') ]
 endif
 
 if exists('g:goyo_after_callbacks')
-    let g:goyo_after_callbacks = g:goyo_after_callbacks + [ function('g:vimrc_goyo_after') ]
+    let g:goyo_after_callbacks = g:goyo_after_callbacks + [ function('g:Vimrc_goyo_after') ]
 else
-    let g:goyo_after_callbacks = [ function('g:vimrc_goyo_after') ]
+    let g:goyo_after_callbacks = [ function('g:Vimrc_goyo_after') ]
 endif
 
 " copy to Mac's clipboard
