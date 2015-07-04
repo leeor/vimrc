@@ -14,6 +14,16 @@ nnoremap Q <nop>
 " first clear any existing autocommands:
 autocmd!
 
+let fresh_install=0
+let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
+if !filereadable(vundle_readme)
+    echo "Installing Vundle.."
+    echo ""
+    silent !mkdir -p ~/.vim/bundle
+    silent !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    let fresh_install=1
+endif
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -44,6 +54,12 @@ Plugin 'sjl/vitality.vim'
 Plugin 'Chiel92/vim-autoformat'
 
 call vundle#end()
+
+if fresh_install == 1
+    echo "Installing Bundles"
+    echo ""
+    :PluginInstall
+endif
 
 set tabpagemax=100
 
