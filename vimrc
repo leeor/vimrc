@@ -52,6 +52,7 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'sjl/vitality.vim'
 Plugin 'Chiel92/vim-autoformat'
+Plugin 'rdnetto/YCM-Generator'
 
 call vundle#end()
 
@@ -93,9 +94,13 @@ imap <silent> <Home> <C-o><Home>
 "iunmap OH
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>" 
-let g:ycm_add_preview_to_completeopt=1
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_add_preview_to_completeopt=0
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_server_use_vim_stdout = 0
+let g:ycm_server_keep_logfiles = 0
 
 let g:clang_snippets=1
 let g:clang_snippets_engine='clang_complete'
@@ -261,6 +266,7 @@ set smartindent
 
 augroup filetype
   autocmd BufNewFile,BufRead *.txt setlocal filetype=human
+  autocmd BufNewFile,BufRead CMake*.txt setlocal filetype=cmake
 augroup END
 
 " in human-language files, automatically format everything at 72 chars:
@@ -273,6 +279,7 @@ autocmd FileType python setlocal formatoptions-=t
 
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang setlocal cindent
+au FileType c,cpp,slang nmap gd :YcmCompleter GoTo<CR>
 
 " for HTML, generally format text, but if a long line has been created leave it
 " alone when editing:
