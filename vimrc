@@ -53,6 +53,7 @@ Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'sjl/vitality.vim'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'rdnetto/YCM-Generator'
+Plugin 'vim-scripts/argtextobj.vim'
 
 call vundle#end()
 
