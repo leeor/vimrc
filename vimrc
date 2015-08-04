@@ -14,54 +14,68 @@ nnoremap Q <nop>
 " first clear any existing autocommands:
 autocmd!
 
-let fresh_install=0
-let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle.."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    let fresh_install=1
+set runtimepath+=$HOME/.vim/bundle/vundle/
+runtime autoload/vundle.vim
+
+if exists( '*vundle#rc' )
+  filetype off
+  call vundle#rc()
+
+  " Plugins
+  Plugin 'gmarik/Vundle.vim'
+
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'scrooloose/syntastic'
+  Plugin 'Valloric/YouCompleteMe'
+  Plugin 'Shougo/unite.vim'
+  Plugin 'tpope/vim-markdown'
+  Plugin 'itspriddle/vim-marked'
+  Plugin 'Lokaltog/vim-easymotion'
+  Plugin 'gregsexton/gitv'
+  Plugin 'bling/vim-airline'
+  Plugin 'altercation/vim-colors-solarized'
+  Plugin 'junegunn/goyo.vim'
+  Plugin 'amix/vim-zenroom2'
+  Plugin 'jngeist/vim-multimarkdown'
+  Plugin 'fatih/vim-go'
+  Plugin 'pangloss/vim-javascript'
+  Plugin 'othree/javascript-libraries-syntax.vim'
+  Plugin 'claco/jasmine.vim'
+  Plugin 'majutsushi/tagbar'
+  Plugin 'Shougo/vimproc.vim'
+  Plugin 'MattesGroeger/vim-bookmarks'
+  Plugin 'sjl/vitality.vim'
+  Plugin 'Chiel92/vim-autoformat'
+  Plugin 'rdnetto/YCM-Generator'
+  Plugin 'vim-scripts/argtextobj.vim'
+  Plugin 'scrooloose/nerdtree'
+  Plugin 'tpope/vim-dispatch'
 endif
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Plugins
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'Shougo/unite.vim'
-Plugin 'tpope/vim-markdown'
-Plugin 'itspriddle/vim-marked'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'gregsexton/gitv'
-Plugin 'bling/vim-airline'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'junegunn/goyo.vim'
-Plugin 'amix/vim-zenroom2'
-Plugin 'jngeist/vim-multimarkdown'
-Plugin 'fatih/vim-go'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'claco/jasmine.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'MattesGroeger/vim-bookmarks'
-Plugin 'sjl/vitality.vim'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'rdnetto/YCM-Generator'
-Plugin 'vim-scripts/argtextobj.vim'
-
-call vundle#end()
-
-if fresh_install == 1
-    echo "Installing Bundles"
-    echo ""
-    :PluginInstall
-endif
+command  InstallVundle
+\ if ! InstallVundle()                                                            |
+\   echohl ErrorMsg                                                               |
+\   echomsg 'Failed to install Vundle automatically. Please install it yourself.' |
+\   echohl None                                                                   |
+\ endif
+function InstallVundle()
+  let vundle_repo = 'https://github.com/gmarik/Vundle.vim.git'
+  let path = substitute( $HOME . '/.vim/bundle/vundle', '/', has( 'win32' ) ? '\\' : '/', 'g' )
+  if ! executable( 'git' )
+    echohl ErrorMsg | echomsg 'Git is not available.' | echohl None | return 0
+  endif
+  if ! isdirectory( path )
+    silent! if ! mkdir( path, 'p' )
+      echohl ErrorMsg | echomsg 'Cannot create directory (may be a regular file): ' . path | echohl None | return 0
+    endif
+  endif
+  echo 'Cloning vundle...'
+  if system( 'git clone "' . vundle_repo . '" "' . path . '"'  ) =~ 'fatal'
+    echohl ErrorMsg | echomsg 'Cannot clone ' . vundle_repo . ' (' . path . ' may be not empty)' | echohl None | return 0
+  endif
+  echo 'Vundle installed. Please restart vim and run :PluginInstall'
+  return 1
+endfunction
 
 set tabpagemax=100
 
