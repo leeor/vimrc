@@ -295,7 +295,7 @@ autocmd FileType python setlocal formatoptions-=t
 
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang setlocal cindent
-au FileType c,cpp,slang nmap gd :YcmCompleter GoTo<CR>
+au FileType c,cpp,slang nmap <leader>gd :YcmCompleter GoTo<CR>
 
 " for HTML, generally format text, but if a long line has been created leave it
 " alone when editing:
@@ -545,3 +545,19 @@ function! AddHeaderGuard()
     endif
 endfunction " AddHeaderGuard()
 nnoremap \hg :call AddHeaderGuard()<CR>
+
+let g:current_project_dir = ''
+function! OpenProject()
+    if !exists("t:NERDTreeBufName") && exists('g:loaded_nerd_tree')
+        let g:current_project_dir = expand("%:p:h")
+        call g:NERDTreeCreator.CreatePrimary(g:current_project_dir)
+        nmap <leader>gb :call CompileProject()<CR>
+    endif
+endfunction
+
+au BufReadPost CMakeLists.txt call OpenProject()
+
+function CompileProject()
+    let concurrency = system('/bin/echo -n $(cat /proc/cpuinfo | grep "^processor" | wc -l)')
+    execute 'Dispatch' 'make' '-j'.concurrency '-C' g:current_project_dir
+endfunction
