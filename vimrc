@@ -266,6 +266,7 @@ set comments+=b:\"
 
 " * Text Formatting -- Specific File Formats
 
+set t_Co=16
 set background=dark
 colorscheme solarized
 
