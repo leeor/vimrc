@@ -366,11 +366,6 @@ set infercase
 
 " * Keystrokes -- Moving Around
 
-" scroll the window (but leaving the cursor in the same place) by a couple of
-" lines up/down with <Ins>/<Del> (like in `Lynx'):
-noremap [A <C-E>
-noremap [B <C-Y>
-
 " Cycle through tabs with Ctrl-Tab and Ctrl-Shift-Tab
 noremap <C-Tab> gt
 inoremap <C-Tab> gt
