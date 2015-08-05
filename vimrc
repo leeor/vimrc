@@ -50,6 +50,7 @@ if exists( '*vundle#rc' )
   Plugin 'vim-scripts/argtextobj.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'tpope/vim-dispatch'
+  Plugin 'christoomey/vim-tmux-navigator'
 endif
 
 command  InstallVundle
@@ -296,6 +297,7 @@ autocmd FileType python setlocal formatoptions-=t
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang setlocal cindent
 au FileType c,cpp,slang nmap <leader>gd :YcmCompleter GoTo<CR>
+au FileType c,cpp,slang nmap <leader>gt :YcmCompleter GetType<CR>
 
 " for HTML, generally format text, but if a long line has been created leave it
 " alone when editing:
@@ -424,16 +426,17 @@ nnoremap <silent> \gs :Gstatus<CR>
 " Unite configuration and mappings
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#default_action('file', 'tabswitch')
-call unite#custom#default_action('grep', 'tabswitch')
+"call unite#custom#default_action('grep', 'tabswitch')
 call unite#custom#default_action('vim_bookmarks', 'tabswitch')
 nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
 nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
 nnoremap <leader>ac :<C-u>UniteWithCursorWord -no-quit grep:.<CR>
+nnoremap <leader>al :<C-u>Unite -no-quit grep:.<CR>
 let g:unite_source_grep_max_candidates = 600
 if executable('ack')
     " Use ack in unite grep source.
     let g:unite_source_grep_command = 'ack'
-    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp'
+    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp --nofollow'
 endif
 nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
 
