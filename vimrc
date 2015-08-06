@@ -14,7 +14,7 @@ nnoremap Q <nop>
 " first clear any existing autocommands:
 autocmd!
 
-set runtimepath+=$HOME/.vim/bundle/vundle/
+set runtimepath+=$HOME/.vim/bundle/vundle.vim/
 runtime autoload/vundle.vim
 
 if exists( '*vundle#rc' )
