@@ -53,13 +53,13 @@ if exists( '*vundle#rc' )
   Plugin 'christoomey/vim-tmux-navigator'
 endif
 
-command  InstallVundle
+command!  InstallVundle
 \ if ! InstallVundle()                                                            |
 \   echohl ErrorMsg                                                               |
 \   echomsg 'Failed to install Vundle automatically. Please install it yourself.' |
 \   echohl None                                                                   |
 \ endif
-function InstallVundle()
+function! InstallVundle()
   let vundle_repo = 'https://github.com/gmarik/Vundle.vim.git'
   let path = substitute( $HOME . '/.vim/bundle/vundle', '/', has( 'win32' ) ? '\\' : '/', 'g' )
   if ! executable( 'git' )
@@ -505,7 +505,7 @@ endfunction
 
 au BufReadPost CMakeLists.txt call OpenProject()
 
-function CompileProject()
+function! CompileProject()
     let concurrency = system('/bin/echo -n $(cat /proc/cpuinfo | grep "^processor" | wc -l)')
     execute 'Dispatch' 'make' '-j'.concurrency '-C' g:current_project_dir
 endfunction
