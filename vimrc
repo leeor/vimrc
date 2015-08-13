@@ -14,7 +14,7 @@ nnoremap Q <nop>
 " first clear any existing autocommands:
 autocmd!
 
-set runtimepath+=$HOME/.vim/bundle/vundle.vim/
+set runtimepath+=$HOME/.vim/bundle/Vundle.vim/
 runtime autoload/vundle.vim
 
 if exists( '*vundle#rc' )
@@ -61,7 +61,7 @@ command!  InstallVundle
 \ endif
 function! InstallVundle()
   let vundle_repo = 'https://github.com/gmarik/Vundle.vim.git'
-  let path = substitute( $HOME . '/.vim/bundle/vundle', '/', has( 'win32' ) ? '\\' : '/', 'g' )
+  let path = substitute( $HOME . '/.vim/bundle/Vundle.vim', '/', has( 'win32' ) ? '\\' : '/', 'g' )
   if ! executable( 'git' )
     echohl ErrorMsg | echomsg 'Git is not available.' | echohl None | return 0
   endif
@@ -398,6 +398,7 @@ call unite#custom#default_action('vim_bookmarks', 'tabswitch')
 let g:unite_source_grep_max_candidates = 600
 if executable('ack')
     " Use ack in unite grep source.
+    let g:unite_source_rec_async_command = 'find'
     let g:unite_source_grep_command = 'ack'
     let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp --nofollow'
 endif
