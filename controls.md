@@ -37,6 +37,7 @@ By order of usage frequency (rough estimation):
 
 ### Source Control (fugitive)
 
+`ss` - status
 `sd` - diff
 `sw` - write
 `sr` - read
@@ -55,3 +56,4 @@ By order of usage frequency (rough estimation):
 `tp` - paste
 `tn` - line numbers
 `tw` - line wrap
+`th` - match highlighting

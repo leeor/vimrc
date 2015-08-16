@@ -296,8 +296,6 @@ autocmd FileType python setlocal formatoptions-=t
 
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang setlocal cindent
-au FileType c,cpp,slang nmap <leader>gd :YcmCompleter GoTo<CR>
-au FileType c,cpp,slang nmap <leader>gt :YcmCompleter GetType<CR>
 
 " for HTML, generally format text, but if a long line has been created leave it
 " alone when editing:
@@ -313,17 +311,6 @@ autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
 
 " JSON
 autocmd BufNewFile,BufRead *.json setlocal ft=javascript
-
-" Go
-au FileType go nmap <leader>gs <Plug>(go-implements)
-au FileType go nmap <leader>gi <Plug>(go-info)
-au FileType go nmap <leader>gr <Plug>(go-run)
-au FileType go nmap <leader>gb <Plug>(go-doc)
-"au FileType go nmap <leader>gt <Plug>(go-test)
-au FileType go nmap <leader>gd <Plug>(go-def-tab)
-au FileType go nmap <leader>gc <Plug>(go-coverage)
-au FileType go nmap <leader>ge <Plug>(go-rename)
-au FileType go nmap gd <Plug>(go-def)
 
 let g:go_fmt_command = "goimports"
 
@@ -403,35 +390,11 @@ noremap Y y$
 
 " * Keystrokes -- Toggles
 
-" Keystrokes to toggle options are defined here.  They are all set to normal
-" mode keystrokes beginning \t but some function keys (which won't work in all
-" terminals) are also mapped.
-
-" have \tp ("toggle paste") toggle paste on/off and report the change, and
-" where possible also have <F4> do this both in normal and insert mode:
-nnoremap \tp :set invpaste paste?<CR>
-
-let g:marked_app = "/Applications/Marked\ 2.app/Contents/MacOS/Marked\ 2"
-nnoremap <silent> \mo :MarkedOpen<CR>
-
-" have \th ("toggle highlight") toggle highlighting of search matches, and
-" report the change:
-nnoremap \th :set invhls hls?<CR>
-
-nmap <leader>gv :Gitv --all<cr>
-nmap <leader>gV :Gitv! --all<cr>
-vmap <leader>gV :Gitv! --all<cr>
-nnoremap <silent> \gs :Gstatus<CR>
-
 " Unite configuration and mappings
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#default_action('file', 'tabswitch')
 "call unite#custom#default_action('grep', 'tabswitch')
 call unite#custom#default_action('vim_bookmarks', 'tabswitch')
-nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
-nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
-nnoremap <leader>ac :<C-u>UniteWithCursorWord -no-quit grep:.<CR>
-nnoremap <leader>al :<C-u>Unite -no-quit grep:.<CR>
 let g:unite_source_grep_max_candidates = 600
 if executable('ack')
     " Use ack in unite grep source.
@@ -439,15 +402,6 @@ if executable('ack')
     let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp --nofollow'
 endif
 nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
-
-" vim-bookmarks configuration and mappings
-nmap <leader>bt :<C-u>BookmarkToggle<CR>
-nmap <leader>bi :<C-u>BookmarkAnnotate<CR>
-nmap <leader>ba :<C-u>BookmarkShowAll<CR>
-nmap <leader>bn :<C-u>BookmarkNext<CR>
-nmap <leader>bp :<C-u>BookmarkPrev<CR>
-nmap <leader>bc :<C-u>BookmarkClear<CR>
-nmap <leader>bx :<C-u>BookmarkClearAll<CR>
 
 let g:bookmark_no_default_key_mappings = 1
 let g:bookmark_manage_per_buffer = 1
@@ -482,8 +436,6 @@ function! g:BMBufferFileLocation(file)
 endfunction
 
 " vim-autoformat configuration
-noremap <leader>af :Autoformat<CR><CR>
-
 let g:formatprg_c = "astyle"
 let g:formatprg_cpp = g:formatprg_c
 let g:formatprg_args_c = '--style=attach --keep-one-line-blocks --keep-one-line-statements --add-brackets --indent=spaces=4 --attach-namespaces --indent-preproc-block --indent-preproc-define --indent-col1-comments --min-conditional-indent=0 --max-instatement-indent=120 --unpad-paren --pad-oper --pad-header --align-pointer=name --break-closing-brackets --max-code-length=200 --break-after-logical'
@@ -502,7 +454,6 @@ function! NumberToggle()
         set relativenumber
     endif
 endfunc
-nnoremap <silent> <leader>n :call NumberToggle()<CR>
 
 " bracket auto-closing
 function! AutocloseOn()
@@ -549,7 +500,6 @@ function! OpenProject()
     if !exists("t:NERDTreeBufName") && exists('g:loaded_nerd_tree')
         let g:current_project_dir = expand("%:p:h")
         call g:NERDTreeCreator.CreatePrimary(g:current_project_dir)
-        nmap <leader>gb :call CompileProject()<CR>
     endif
 endfunction
 
@@ -559,3 +509,67 @@ function CompileProject()
     let concurrency = system('/bin/echo -n $(cat /proc/cpuinfo | grep "^processor" | wc -l)')
     execute 'Dispatch' 'make' '-j'.concurrency '-C' g:current_project_dir
 endfunction
+
+let g:marked_app = "/Applications/Marked\ 2.app/Contents/MacOS/Marked\ 2"
+
+nnoremap <leader>nb :<C-u>Unite buffer<CR>
+
+au FileType c,cpp,slang nmap <leader>gd :<C-u>YcmCompleter GoTo<CR>
+au FileType c,cpp,slang nmap <leader>gt :<C-u>YcmCompleter GetType<CR>
+
+" Go
+au FileType go nmap <leader>gs <Plug>(go-implements)
+au FileType go nmap <leader>gi <Plug>(go-info)
+au FileType go nmap <leader>gr <Plug>(go-run)
+au FileType go nmap <leader>gb <Plug>(go-doc)
+"au FileType go nmap <leader>gt <Plug>(go-test)
+au FileType go nmap <leader>gd <Plug>(go-def-tab)
+au FileType go nmap <leader>gc <Plug>(go-coverage)
+au FileType go nmap <leader>ge <Plug>(go-rename)
+au FileType go nmap gd <Plug>(go-def)
+
+" Source Control
+nnoremap <silent> <leader>ss :<C-u>Gstatus<CR>
+nnoremap <silent> <leader>sd :<C-u>Gdiff<CR>
+nnoremap <silent> <leader>sw :<C-u>Gwrite<CR>
+nnoremap <silent> <leader>sr :<C-u>Gread<CR>
+nnoremap <silent> <leader>sc :<C-u>Gcommit<CR>
+nnoremap <silent> <leader>sb :<C-u>Gblame<CR>
+nnoremap <silent> <leader>sh :<C-u>Gitv<CR>
+nnoremap <silent> <leader>sf :<C-u>Gitv!<CR>
+vnoremap <silent> <leader>sf :<C-u>Gitv!<CR>
+
+" File Access
+nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
+nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
+
+" Ack/grep
+nnoremap <leader>ac :<C-u>UniteWithCursorWord -no-quit grep:.<CR>
+nnoremap <leader>al :<C-u>Unite -no-quit grep:.<CR>
+
+" vim-bookmarks configuration and mappings
+nmap <leader>bt :<C-u>BookmarkToggle<CR>
+nmap <leader>bi :<C-u>BookmarkAnnotate<CR>
+nmap <leader>ba :<C-u>BookmarkShowAll<CR>
+nmap <leader>bn :<C-u>BookmarkNext<CR>
+nmap <leader>bp :<C-u>BookmarkPrev<CR>
+nmap <leader>bc :<C-u>BookmarkClear<CR>
+nmap <leader>bx :<C-u>BookmarkClearAll<CR>
+
+noremap <leader>af :Autoformat<CR><CR>
+
+" Toggles
+" Keystrokes to toggle options are defined here.  They are all set to normal
+" mode keystrokes beginning \t but some function keys (which won't work in all
+" terminals) are also mapped.
+
+" have \th ("toggle highlight") toggle highlighting of search matches, and
+" report the change:
+nnoremap <silent> <leader>th :<C-u>set invhls hls?<CR>
+nnoremap <silent> <leader>tn :<C-u>call NumberToggle()<CR>
+nnoremap <silent> <leader>tw :<C-u>set invwrap wrap?
+" have \tp ("toggle paste") toggle paste on/off and report the change
+nnoremap <silent> <leader>tp :<C-u>set invpaste paste?<CR>
+
+nnoremap <silent> <leader>eb :call CompileProject()<CR>
+nnoremap <silent> <leader>em :<C-u>MarkedOpen<CR>
