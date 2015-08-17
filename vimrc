@@ -568,9 +568,10 @@ noremap <leader>af :Autoformat<CR><CR>
 " report the change:
 nnoremap <silent> <leader>th :<C-u>set invhls hls?<CR>
 nnoremap <silent> <leader>tn :<C-u>call NumberToggle()<CR>
-nnoremap <silent> <leader>tw :<C-u>set invwrap wrap?
+nnoremap <silent> <leader>tw :<C-u>set invwrap wrap?<CR>
 " have \tp ("toggle paste") toggle paste on/off and report the change
 nnoremap <silent> <leader>tp :<C-u>set invpaste paste?<CR>
 
+" External tasks
 nnoremap <silent> <leader>eb :call CompileProject()<CR>
 nnoremap <silent> <leader>em :<C-u>MarkedOpen<CR>
