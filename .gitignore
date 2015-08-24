@@ -2,3 +2,4 @@ bundle
 undos
 .netrwhist
 .*.swp
+tmp/
