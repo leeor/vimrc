@@ -244,6 +244,8 @@ set ttimeoutlen=0
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
     \ exe "normal! g'\"" | endif
 
+set scrolloff=5
+
 " }}}
 
 " Tab & Indent settings {{{
@@ -348,6 +350,10 @@ noremap <expr> <silent> OH col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 imap <silent> OH <C-o>OH
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 imap <silent> <Home> <C-o><Home>
+
+" Emacs bindings in command line mode
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
 
 set nostartofline
 
@@ -549,11 +555,17 @@ cabbrev gitv Gitv
 " Unite {{{
 
 let g:unite_source_grep_max_candidates = 0
-if executable('ack')
-    " Use ack in unite grep source.
-    let g:unite_source_rec_async_command = 'find'
+let g:unite_source_rec_async_command = 'find'
+if executable('ag')
+    let g:unite_source_grep_command='ag'
+    let g:unite_source_grep_default_opts='--nocolor --nogroup --noheading -a -S -w'
+    let g:unite_source_grep_recursive_opt=''
+    let g:unite_source_grep_search_word_highlight = 1
+elseif executable('ack')
     let g:unite_source_grep_command = 'ack'
     let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp --nofollow'
+    let g:unite_source_grep_recursive_opt=''
+    let g:unite_source_grep_search_word_highlight = 1
 endif
 nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
 
