@@ -1,6 +1,10 @@
 " vim:fdm=marker
 " .vimrc
 
+" with inspiration from:
+" https://github.com/joedicastro/dotfiles/blob/master/vim/vimrc#L1075
+" https://github.com/zaiste/vimified/blob/20d3fa6a9648301fd9c5f86322614d59301868bc/vimrc
+
 set shell=/bin/zsh
 
 " Complatibility {{{
@@ -460,9 +464,14 @@ let g:tagbar_single_click = 1
 
 " }}}
 
-" Syntactic {{{
+" Syntastic {{{
 
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-", " proprietary attribute \"app-", " proprietary attribute \"class\""]
+
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = '⚡'
+let g:syntastic_style_warning_symbol = '⚡'
 
 " }}}
 
@@ -554,6 +563,31 @@ cabbrev gitv Gitv
 
 " Unite {{{
 
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+let g:default_context = {
+    \ 'winheight' : 15,
+    \ 'update_time' : 200,
+    \ 'prompt' : '>>> ',
+    \ 'enable_start_insert' : 0,
+    \ 'enable_short_source_names' : 0,
+    \ 'marked_icon' : '✓',
+    \ 'ignorecase' : 1,
+    \ 'smartcase' : 1,
+\ }
+
+call unite#custom#profile('default', 'context', default_context)
+
+let g:unite_source_history_yank_enable = 1
+let g:unite_force_overwrite_statusline = 0
+let g:unite_split_rule = 'botright'
+let g:unite_data_directory = s:dotvim.'/tmp/unite'
+call MakeDirIfNoExists(s:dotvim.'/tmp/unite')
+
+let g:unite_source_buffer_time_format = '(%d-%m-%Y %H:%M:%S) '
+let g:unite_source_file_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
+let g:unite_source_directory_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
+
 let g:unite_source_grep_max_candidates = 0
 let g:unite_source_rec_async_command = 'find'
 if executable('ag')
@@ -567,12 +601,12 @@ elseif executable('ack')
     let g:unite_source_grep_recursive_opt=''
     let g:unite_source_grep_search_word_highlight = 1
 endif
-nnoremap <buffer><expr> t unite#smart_map("t", unite#do_action('tabswitch'))
 
 nnoremap <leader>nb :<C-u>Unite buffer<CR>
 
 " File Access
 nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
+nnoremap <leader>fm :<C-u>Unite file_mru<CR>
 nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
 
 " Ack/grep
@@ -580,6 +614,19 @@ nnoremap <leader>ac :<C-u>UniteWithCursorWord grep:.<CR>
 nnoremap <leader>al :<C-u>Unite grep:.<CR>
 
 nnoremap <leader>ur :<C-u>UniteResume<CR>
+
+nnoremap <silent><localleader>f :Unite -silent -winheight=17 -start-insert menu:files<CR>
+let g:unite_source_menu_menus = {}
+let g:unite_source_menu_menus.files = {
+    \ 'description' : '          files & dirs
+        \                                          ⌘ \\f',
+    \}
+let g:unite_source_menu_menus.files.command_candidates = [
+        \['▷ open file                                                  ⌘ ,fo',
+            \'Unite -no-split -start-insert -sync -default-action=open file_rec/async:!'],
+        \['▷ open more recently used files                              ⌘ ,fm',
+            \'Unite file_mru'],
+    \]
 
 " }}}
 
