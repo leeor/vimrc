@@ -20,7 +20,7 @@ autocmd!
 
 " }}}
 
-let s:dotvim = fnamemodify(globpath(&rtp, 'vimified.dir'), ':p:h')
+let s:dotvim = fnamemodify(globpath(&rtp, '.locator'), ':p:h')
 
 " Utils {{{
 
@@ -96,7 +96,7 @@ NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':
             \['file_mru', 'directory_mru']}}
 
 " File explorer (needed where ranger is not available)
-NeoBundleLazy 'Shougo/vimfiler', {'autoload' : { 'commands' : ['VimFiler']}}
+NeoBundleLazy 'Shougo/vimfiler', {'autoload' : { 'commands' : ['VimFiler', 'VimFilerExplorer']}}
 
 " Unite plugin that provides command line completition
 NeoBundle 'joedicastro/unite-cmdmatch'

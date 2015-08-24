@@ -2,7 +2,6 @@ let g:current_project_dir = ''
 function! OpenProject()
     if g:current_project_dir == ''
         let g:current_project_dir = expand("%:p:h")
-        call VimFilerExplorer
         nnoremap <silent> <leader>eb :call CompileProject()<CR>
     endif
 endfunction
