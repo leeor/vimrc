@@ -186,7 +186,7 @@ NeoBundleCheck
 " Leaders {{{
 
 let mapleader=','
-let maplocalleader='\\'
+let maplocalleader=' '
 
 " }}}
 
@@ -602,10 +602,8 @@ elseif executable('ack')
     let g:unite_source_grep_search_word_highlight = 1
 endif
 
-nnoremap <leader>nb :<C-u>Unite buffer<CR>
-
 " File Access
-nnoremap <leader>fo :<C-u>Unite -no-split -start-insert -sync -default-action=open file_rec/async:!<CR>
+nnoremap <leader>fo :<C-u>Unite -start-insert -sync -default-action=open file_rec/async:!<CR>
 nnoremap <leader>fm :<C-u>Unite file_mru<CR>
 nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
 
@@ -615,18 +613,127 @@ nnoremap <leader>al :<C-u>Unite grep:.<CR>
 
 nnoremap <leader>ur :<C-u>UniteResume<CR>
 
-nnoremap <silent><localleader>f :Unite -silent -winheight=17 -start-insert menu:files<CR>
+" Menus {{{
+
+" menu prefix key (for all Unite menus) {{{
+nnoremap [menu] <Nop>
+nmap <LocalLeader> [menu]
+" }}}
+
+" menus menu
+nnoremap <silent>[menu]u :Unite -silent -winheight=20 menu<CR>
+
 let g:unite_source_menu_menus = {}
+
+" files menu {{{
+
 let g:unite_source_menu_menus.files = {
     \ 'description' : '          files & dirs
-        \                                          ⌘ \\f',
+        \                                          ⌘ [space]f',
     \}
 let g:unite_source_menu_menus.files.command_candidates = [
         \['▷ open file                                                  ⌘ ,fo',
             \'Unite -no-split -start-insert -sync -default-action=open file_rec/async:!'],
         \['▷ open more recently used files                              ⌘ ,fm',
             \'Unite file_mru'],
+        \['▷ save as root                                               ⌘ :w!!',
+            \'exe "write !sudo tee % >/dev/null"'],
     \]
+
+nnoremap <silent>[menu]f :Unite -silent -winheight=17 -start-insert menu:files<CR>
+" }}}
+
+" file searching menu {{{
+
+let g:unite_source_menu_menus.grep = {
+    \ 'description' : '           search files
+        \                                          ⌘ [space]a',
+    \}
+let g:unite_source_menu_menus.grep.command_candidates = [
+    \['▷ grep current word (ag → ack → grep)                        ⌘ ,ac',
+        \'UniteWithCursorWord grep'],
+    \['▷ grep (ag → ack → grep)                                     ⌘ ,al',
+        \'Unite grep'],
+    \['▷ find',
+        \'Unite find'],
+    \['▷ locate',
+        \'Unite -start-insert locate'],
+    \]
+nnoremap <silent>[menu]a :Unite -silent menu:grep<CR>
+
+" }}}
+
+" buffers, tabs & windows menu {{{
+
+nnoremap <leader>nb :<C-u>Unite buffer<CR>
+nnoremap <leader>nB :<C-u>Unite tab<CR>
+nnoremap <leader>nl :<C-u>Unite location_list<CR>
+nnoremap <leader>nq :<C-u>Unite quickfix<CR>
+nnoremap <leader>nc :<C-u>close<CR>
+nnoremap <leader>nd :<C-u>bd<CR>
+
+let g:unite_source_menu_menus.navigation = {
+    \ 'description' : '     navigate by buffers, tabs & windows
+        \                   ⌘ [space]n',
+    \}
+let g:unite_source_menu_menus.navigation.command_candidates = [
+    \['▷ buffers                                                    ⌘ ,nb',
+        \'Unite buffer'],
+    \['▷ tabs                                                       ⌘ ,nB',
+        \'Unite tab'],
+    \['▷ windows',
+        \'Unite window'],
+    \['▷ location list                                              ⌘ ,nl',
+        \'Unite location_list'],
+    \['▷ quickfix                                                   ⌘ ,nq',
+        \'Unite quickfix'],
+    \['▷ resize windows',
+        \'WinResizerStartResize'],
+    \['▷ close current window                                       ⌘ ,nc',
+        \'close'],
+    \['▷ delete buffer                                              ⌘ ,nd',
+        \'bd'],
+    \]
+nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
+
+" }}}
+
+" buffer internal searching menu {{{
+
+nnoremap <leader>fl :<C-u>Unite -auto-preview -start-insert line<CR>
+nnoremap [menu]* :<C-u>UniteWithCursorWord -no-split -auto-preview line<CR>
+nnoremap <leader>ft :<C-u>Unite -vertical -winwidth=40 -direction=topleft -toggle outline<CR>
+nnoremap <leader>fm :<C-u>Unite -auto-preview marks<CR>
+nnoremap <leader>f; :<C-u>Unite -toggle grep:%::FIXME\|TODO\|NOTE\|XXX\|@todo<CR>
+
+let g:unite_source_menu_menus.searching = {
+    \ 'description' : '      searches inside the current buffer
+        \                    ⌘ [space]f',
+    \}
+let g:unite_source_menu_menus.searching.command_candidates = [
+    \['▷ search line                                                ⌘ ,fl',
+        \'Unite -auto-preview -start-insert line'],
+    \['▷ search word under the cursor                               ⌘ [space]*',
+        \'UniteWithCursorWord -no-split -auto-preview line'],
+    \['▷ search outlines & tags (ctags)                             ⌘ ,ft',
+        \'Unite -vertical -winwidth=40 -direction=topleft -toggle outline'],
+    \['▷ search marks',
+        \'Unite -auto-preview mark                                  ⌘ ,fm'],
+    \['▷ search folds',
+        \'Unite -vertical -winwidth=30 -auto-highlight fold'],
+    \['▷ search changes',
+        \'Unite change'],
+    \['▷ search jumps',
+        \'Unite jump'],
+    \['▷ search undos',
+        \'Unite undo'],
+    \['▷ search tasks                                               ⌘ ,f;',
+        \'Unite -toggle grep:%::FIXME|TODO|NOTE|XXX|@todo'],
+    \]
+nnoremap <silent>[menu]f :Unite -silent menu:searching<CR>
+" }}}
+
+" }}}
 
 " }}}
 
@@ -704,6 +811,7 @@ augroup filetype
     autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
 augroup END
 
+autocmd! BufWritePost vimrc :so %
 " }}}
 
 " Execution permissions by default to shebang (#!) files {{{
