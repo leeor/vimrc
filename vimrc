@@ -118,6 +118,7 @@ NeoBundle 'airblade/vim-gitgutter'
 " Git viewer
 NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
             \ 'autoload':{'commands':'Gitv'}}
+NeoBundle 'joedicastro/vim-github-dashboard'
 " }}}
 
 " Markdown {{{
@@ -142,8 +143,21 @@ NeoBundle 'bling/vim-airline'
 
 NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
-NeoBundle 'Valloric/YouCompleteMe'
+" Clang {{{
+
+NeoBundle 'Rip-Rip/clang_complete'
+
+" }}}
+
+" YouCompleteMe {{{
+
+"NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'rdnetto/YCM-Generator'
+
+" }}}
+
+NeoBundle 'ervandew/supertab'
+
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'majutsushi/tagbar'
@@ -481,12 +495,6 @@ let g:syntastic_style_warning_symbol = '⚡'
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
-
 " }}}
 
 " YouCompleteMe {{{
@@ -498,51 +506,82 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_key_invoke_completion = '<C-Space>'
 
-au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
-au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
+"au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
+"au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
 
 " }}}
 
-" goyo {{{
+" clang-complete {{{
 
-function! g:Vimrc_goyo_before()
-    autocmd! WinLeave *
-    autocmd! WinEnter *
-    autocmd! InsertEnter *
-    autocmd! InsertLeave *
+set conceallevel=2
+set concealcursor=vin
+let g:clang_snippets=1
+let g:clang_conceal_snippets=1
+let g:clang_snippets_engine='clang_complete'
+let g:clang_complete_macros=1
+"let g:clang_make_default_keymappings=0
+let g:clang_auto_user_options='compile_commands.json,.clang_complete,path'
 
-    set nocursorline
-endfunction
+"let g:clang_jumpto_declaration_key=""
+"let g:clang_jumpto_declaration_in_preview_key=""
+"let g:clang_jumpto_back_key=""
 
-function! g:Vimrc_goyo_after()
-    autocmd WinLeave * set nocursorline
-    autocmd WinEnter * set cursorline
-    autocmd InsertEnter * :set number
-    autocmd InsertLeave * :set relativenumber
-endfunction
+" Complete options (disable preview scratch window, longest removed to aways show menu)
+set completeopt=menu,menuone
 
-if exists('g:goyo_before_callbacks')
-    let g:goyo_before_callbacks = g:goyo_before_callbacks + [ function('g:Vimrc_goyo_before') ]
-else
-    let g:goyo_before_callbacks = [ function('g:Vimrc_goyo_before') ]
-endif
+" Limit popup menu height
+set pumheight=20
 
-if exists('g:goyo_after_callbacks')
-    let g:goyo_after_callbacks = g:goyo_after_callbacks + [ function('g:Vimrc_goyo_after') ]
-else
-    let g:goyo_after_callbacks = [ function('g:Vimrc_goyo_after') ]
-endif
+au FileType c,cpp,slang nmap <localleader>gd :<C-u>call g:ClangGotoDeclaration()<CR>
+
+" }}}
+
+" SuperTab {{{
+
+" completion fall-back
+let g:SuperTabDefaultCompletionType='<c-x><c-u><c-p>'
 
 " }}}
 
 " fugitive {{{
 
-"nnoremap <silent> <leader>ss :<C-u>Gstatus<CR>
-"nnoremap <silent> <leader>sd :<C-u>Gdiff<CR>
-"nnoremap <silent> <leader>sw :<C-u>Gwrite<CR>
-"nnoremap <silent> <leader>sr :<C-u>Gread<CR>
-"nnoremap <silent> <leader>sc :<C-u>Gcommit<CR>
-"nnoremap <silent> <leader>sb :<C-u>Gblame<CR>
+nnoremap <Leader>gn :Unite output:echo\ system("git\ init")<CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>go :Gread<CR>
+nnoremap <Leader>gR :Gremove<CR>
+nnoremap <Leader>gm :Gmove<Space>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gB :Gbrowse<CR>
+nnoremap <Leader>gp :Git! push<CR>
+nnoremap <Leader>gP :Git! pull<CR>
+nnoremap <Leader>gi :Git!<Space>
+nnoremap <Leader>ge :Gedit<CR>
+nnoremap <Leader>gE :Gedit<Space>
+nnoremap <Leader>gl :exe "silent Glog <Bar> Unite -no-quit
+            \ quickfix"<CR>:redraw!<CR>
+nnoremap <Leader>gL :exe "silent Glog -- <Bar> Unite -no-quit
+            \ quickfix"<CR>:redraw!<CR>
+nnoremap <Leader>gt :!tig<CR>:redraw!<CR>
+nnoremap <Leader>gS :exe "silent !shipit"<CR>:redraw!<CR>
+nnoremap <Leader>gg :exe 'silent Ggrep -i '.input("Pattern: ")<Bar>Unite
+            \ quickfix -no-quit<CR>
+nnoremap <Leader>ggm :exe 'silent Glog --grep='.input("Pattern: ").' <Bar>
+            \Unite -no-quit quickfix'<CR>
+nnoremap <Leader>ggt :exe 'silent Glog -S='.input("Pattern: ").' <Bar>
+            \Unite -no-quit quickfix'<CR>
+
+nnoremap <Leader>ggc :silent! Ggrep -i<Space>
+
+" for the diffmode
+noremap <Leader>du :diffupdate<CR>
+
+if !exists(":Gdiffoff")
+    command Gdiffoff diffoff | q | Gedit
+endif
+noremap <Leader>dq :Gdiffoff<CR>
 
 " }}}
 
@@ -555,9 +594,9 @@ let g:Gitv_WipeAllOnClose = 1
 let g:Gitv_DoNotMapCtrlKey = 1
 cabbrev gitv Gitv
 
-"nnoremap <silent> <leader>sh :<C-u>Gitv<CR>
-"nnoremap <silent> <leader>sf :<C-u>Gitv!<CR>
-"vnoremap <silent> <leader>sf :<C-u>Gitv!<CR>
+nnoremap <silent> <leader>gv :Gitv --all<CR>
+nnoremap <silent> <leader>gV :Gitv! --all<CR>
+vnoremap <silent> <leader>gV :Gitv! --all<CR>
 
 " }}}
 
@@ -629,7 +668,7 @@ let g:unite_source_menu_menus = {}
 
 let g:unite_source_menu_menus.files = {
     \ 'description' : '          files & dirs
-        \                                          ⌘ [space]f',
+        \                                          ⌘ [space]o',
     \}
 let g:unite_source_menu_menus.files.command_candidates = [
         \['▷ open file                                                  ⌘ ,fo',
@@ -640,7 +679,7 @@ let g:unite_source_menu_menus.files.command_candidates = [
             \'exe "write !sudo tee % >/dev/null"'],
     \]
 
-nnoremap <silent>[menu]f :Unite -silent -winheight=17 -start-insert menu:files<CR>
+nnoremap <silent>[menu]o :Unite -silent -winheight=17 -start-insert menu:files<CR>
 " }}}
 
 " file searching menu {{{
@@ -731,6 +770,187 @@ let g:unite_source_menu_menus.searching.command_candidates = [
         \'Unite -toggle grep:%::FIXME|TODO|NOTE|XXX|@todo'],
     \]
 nnoremap <silent>[menu]f :Unite -silent menu:searching<CR>
+" }}}
+
+" yanks, registers & history menu {{{
+
+nnoremap <leader>i :<C-u>Unite history/yank<CR>
+nnoremap <leader>q: :<C-u>Unite history/command<CR>
+nnoremap <leader>q/ :<C-u>Unite history/search<CR>
+
+let g:unite_source_menu_menus.registers = {
+    \ 'description' : '      yanks, registers & history
+        \                            ⌘ [space]i',
+    \}
+let g:unite_source_menu_menus.registers.command_candidates = [
+    \['▷ yanks                                                      ⌘ ,i',
+        \'Unite history/yank'],
+    \['▷ commands       (history)                                   ⌘ q:',
+        \'Unite history/command'],
+    \['▷ searches       (history)                                   ⌘ q/',
+        \'Unite history/search'],
+    \['▷ registers',
+        \'Unite register'],
+    \['▷ messages',
+        \'Unite output:messages'],
+    \]
+nnoremap <silent>[menu]i :Unite -silent menu:registers<CR>
+" }}}
+
+" text editing menu {{{
+let g:unite_source_menu_menus.text = {
+    \ 'description' : '           text editing
+        \                                          ⌘ [space]e',
+    \}
+let g:unite_source_menu_menus.text.command_candidates = [
+    \['▷ toggle search results highlight                            ⌘ ,th',
+        \'set invhlsearch'],
+    \['▷ toggle line numbers                                        ⌘ ,tn',
+        \'call NumberToggle()'],
+    \['▷ toggle wrapping                                            ⌘ ,tw',
+        \'set invwrap wrap?'],
+    \['▷ toggle fold                                                ⌘ za',
+        \'normal za'],
+    \['▷ open all folds                                             ⌘ zR',
+        \'normal zR'],
+    \['▷ close all folds                                            ⌘ zM',
+        \'normal zM'],
+    \['▷ toggle paste mode                                          ⌘ ,tp',
+        \'normal ,P'],
+    \['▷ remove trailing whitespaces                                ⌘ ,rt',
+        \'normal ,et'],
+    \]
+nnoremap <silent>[menu]e :Unite -silent -winheight=20 menu:text <CR>
+" }}}
+
+" neobundle menu {{{
+let g:unite_source_menu_menus.neobundle = {
+    \ 'description' : '      plugins administration with neobundle
+        \                 ⌘ [space]b',
+    \}
+let g:unite_source_menu_menus.neobundle.command_candidates = [
+    \['▷ neobundle',
+        \'Unite neobundle'],
+    \['▷ neobundle log',
+        \'Unite neobundle/log'],
+    \['▷ neobundle lazy',
+        \'Unite neobundle/lazy'],
+    \['▷ neobundle update',
+        \'Unite neobundle/update'],
+    \['▷ neobundle search',
+        \'Unite neobundle/search'],
+    \['▷ neobundle install',
+        \'Unite neobundle/install'],
+    \['▷ neobundle check',
+        \'Unite -no-empty output:NeoBundleCheck'],
+    \['▷ neobundle docs',
+        \'Unite output:NeoBundleDocs'],
+    \['▷ neobundle clean',
+        \'NeoBundleClean'],
+    \['▷ neobundle rollback',
+        \'exe "NeoBundleRollback" input("plugin: ")'],
+    \['▷ neobundle list',
+        \'Unite output:NeoBundleList'],
+    \['▷ neobundle direct edit',
+        \'NeoBundleExtraEdit'],
+    \]
+nnoremap <silent>[menu]b :Unite -silent -start-insert menu:neobundle<CR>
+" }}}
+
+" git menu {{{
+let g:unite_source_menu_menus.git = {
+    \ 'description' : '            admin git repositories
+        \                                ⌘ [space]g',
+    \}
+let g:unite_source_menu_menus.git.command_candidates = [
+    \['▷ git viewer             (gitv)                              ⌘ ,gv',
+        \'normal ,gv'],
+    \['▷ git viewer - buffer    (gitv)                              ⌘ ,gV',
+        \'normal ,gV'],
+    \['▷ git status             (fugitive)                          ⌘ ,gs',
+        \'Gstatus'],
+    \['▷ git diff               (fugitive)                          ⌘ ,gd',
+        \'Gdiff'],
+    \['▷ git commit             (fugitive)                          ⌘ ,gc',
+        \'Gcommit'],
+    \['▷ git log                (fugitive)                          ⌘ ,gl',
+        \'exe "silent Glog | Unite -no-quit quickfix"'],
+    \['▷ git log - all          (fugitive)                          ⌘ ,gL',
+        \'exe "silent Glog -all | Unite -no-quit quickfix"'],
+    \['▷ git blame              (fugitive)                          ⌘ ,gb',
+        \'Gblame'],
+    \['▷ git add/stage          (fugitive)                          ⌘ ,gw',
+        \'Gwrite'],
+    \['▷ git checkout           (fugitive)                          ⌘ ,go',
+        \'Gread'],
+    \['▷ git rm                 (fugitive)                          ⌘ ,gR',
+        \'Gremove'],
+    \['▷ git mv                 (fugitive)                          ⌘ ,gm',
+        \'exe "Gmove " input("destino: ")'],
+    \['▷ git push               (fugitive, buffer output)           ⌘ ,gp',
+        \'Git! push'],
+    \['▷ git pull               (fugitive, buffer output)           ⌘ ,gP',
+        \'Git! pull'],
+    \['▷ git command            (fugitive, buffer output)           ⌘ ,gi',
+        \'exe "Git! " input("comando git: ")'],
+    \['▷ git edit               (fugitive)                          ⌘ ,gE',
+        \'exe "command Gedit " input(":Gedit ")'],
+    \['▷ git grep               (fugitive)                          ⌘ ,gg',
+        \'exe "silent Ggrep -i ".input("Pattern: ") | Unite -no-quit quickfix'],
+    \['▷ git grep - messages    (fugitive)                          ⌘ ,ggm',
+        \'exe "silent Glog --grep=".input("Pattern: ")." | Unite -no-quit quickfix"'],
+    \['▷ git grep - text        (fugitive)                          ⌘ ,ggt',
+        \'exe "silent Glog -S".input("Pattern: ")." | Unite -no-quit quickfix"'],
+    \['▷ git init                                                   ⌘ ,gn',
+        \'Unite output:echo\ system("git\ init")'],
+    \['▷ git cd                 (fugitive)',
+        \'Gcd'],
+    \['▷ git lcd                (fugitive)',
+        \'Glcd'],
+    \['▷ git browse             (fugitive)                          ⌘ ,gB',
+        \'Gbrowse'],
+    \['▷ github dashboard       (github-dashboard)                  ⌘ ,gD',
+        \'exe "GHD! " input("Username: ")'],
+    \['▷ github activity        (github-dashboard)                  ⌘ ,gA',
+        \'exe "GHA! " input("Username or repository: ")'],
+    \['▷ github issues & PR                                         ⌘ ,gS',
+        \'normal ,gS'],
+    \]
+nnoremap <silent>[menu]g :Unite -silent -winheight=29 -start-insert menu:git<CR>
+" }}}
+
+" vim menu {{{
+let g:unite_source_menu_menus.vim = {
+    \ 'description' : '            vim
+        \                                                   ⌘ [space]v',
+    \}
+let g:unite_source_menu_menus.vim.command_candidates = [
+    \['▷ choose colorscheme',
+        \'Unite colorscheme -auto-preview'],
+    \['▷ mappings',
+        \'Unite mapping -start-insert'],
+    \['▷ edit configuration file (vimrc)',
+        \'edit $MYVIMRC'],
+    \['▷ choose filetype',
+        \'Unite -start-insert filetype'],
+    \['▷ vim help',
+        \'Unite -start-insert help'],
+    \['▷ vim commands',
+        \'Unite -start-insert command'],
+    \['▷ vim functions',
+        \'Unite -start-insert function'],
+    \['▷ vim runtimepath',
+        \'Unite -start-insert runtimepath'],
+    \['▷ vim command output',
+        \'Unite output'],
+    \['▷ unite sources',
+        \'Unite source'],
+    \['▷ kill process',
+        \'Unite -default-action=sigkill -start-insert process'],
+    \['▷ launch executable (dmenu like)',
+        \'Unite -start-insert launcher'],
+    \]
+nnoremap <silent>[menu]v :Unite menu:vim -silent -start-insert<CR>
 " }}}
 
 " }}}
