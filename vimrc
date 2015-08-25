@@ -229,7 +229,7 @@ set history=500
 " * save upto 500 lines of registers
 " * don't save info for file in /mnt
 " * don't highlight previous search terms on start
-set viminfo='0,f0,<500,/10,r/mnt,h
+set viminfo='1000,f0,<500,/10,r/mnt,h
 
 " display the current mode and partially-typed commands in the status line:
 set showmode
@@ -257,10 +257,6 @@ set title
 
 " switch modes faster
 set ttimeoutlen=0
-
-" when we reload, tell vim to restore the cursor to the saved position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
-    \ exe "normal! g'\"" | endif
 
 set scrolloff=5
 
@@ -1000,7 +996,7 @@ let g:gitgutter_override_sign_column_highlight = 0
 
 " }}}
 
-" file types {{{
+" Auto commands {{{
 
 exec ':so '.s:dotvim.'/functions/cproject.vim'
 
@@ -1032,6 +1028,10 @@ augroup filetype
 augroup END
 
 autocmd! BufWritePost vimrc :so %
+
+" when we reload, tell vim to restore the cursor to the saved position
+autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ exe "normal! g'\"" | endif
 " }}}
 
 " Execution permissions by default to shebang (#!) files {{{
