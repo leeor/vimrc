@@ -145,18 +145,18 @@ NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
 " Clang {{{
 
-NeoBundle 'Rip-Rip/clang_complete'
+"NeoBundle 'Rip-Rip/clang_complete'
 
 " }}}
 
 " YouCompleteMe {{{
 
-"NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'rdnetto/YCM-Generator'
 
 " }}}
 
-NeoBundle 'ervandew/supertab'
+"NeoBundle 'ervandew/supertab'
 
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'altercation/vim-colors-solarized'
@@ -502,8 +502,8 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_key_invoke_completion = '<C-Space>'
 
-"au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
-"au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
+au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
+au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
 
 " }}}
 
@@ -528,7 +528,7 @@ set completeopt=menu,menuone
 " Limit popup menu height
 set pumheight=20
 
-au FileType c,cpp,slang nmap <localleader>gd :<C-u>call g:ClangGotoDeclaration()<CR>
+"au FileType c,cpp,slang nmap <localleader>gd :<C-u>call g:ClangGotoDeclaration()<CR>
 
 " }}}
 
