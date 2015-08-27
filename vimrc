@@ -625,26 +625,17 @@ let g:unite_source_directory_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
 
 let g:unite_source_grep_max_candidates = 0
 let g:unite_source_rec_async_command = 'find'
-if executable('ag')
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --nogroup --noheading -a -S -w'
-    let g:unite_source_grep_recursive_opt=''
-    let g:unite_source_grep_search_word_highlight = 1
-elseif executable('ack')
+"if executable('ag')
+"    let g:unite_source_grep_command='ag'
+"    let g:unite_source_grep_default_opts='--nocolor --nogroup --noheading -a -S -w'
+"    let g:unite_source_grep_recursive_opt=''
+"    let g:unite_source_grep_search_word_highlight = 1
+if executable('ack')
     let g:unite_source_grep_command = 'ack'
-    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --word-regexp --nofollow'
+    let g:unite_source_grep_default_opts = '--smart-case --no-break --nocolor -H --nofollow'
     let g:unite_source_grep_recursive_opt=''
     let g:unite_source_grep_search_word_highlight = 1
 endif
-
-" File Access
-nnoremap <leader>fo :<C-u>Unite -start-insert -sync -default-action=open file_rec/async:!<CR>
-nnoremap <leader>fm :<C-u>Unite file_mru<CR>
-nnoremap <leader>fr :<C-u>Unite -start-insert -default-action=tabswitch -sync file_rec/async:!<CR>
-
-" Ack/grep
-nnoremap <leader>ac :<C-u>UniteWithCursorWord grep:.<CR>
-nnoremap <leader>al :<C-u>Unite grep:.<CR>
 
 nnoremap <leader>ur :<C-u>UniteResume<CR>
 
@@ -655,12 +646,18 @@ nnoremap [menu] <Nop>
 nmap <LocalLeader> [menu]
 " }}}
 
-" menus menu
+" menus menu {{{
 nnoremap <silent>[menu]u :Unite -silent -winheight=20 menu<CR>
 
 let g:unite_source_menu_menus = {}
 
+" }}}
+
 " files menu {{{
+
+" File Access
+nnoremap <leader>fo :<C-u>Unite -start-insert -sync -default-action=open file_rec/async:!<CR>
+nnoremap <leader>fm :<C-u>Unite file_mru<CR>
 
 let g:unite_source_menu_menus.files = {
     \ 'description' : '          files & dirs
@@ -680,15 +677,25 @@ nnoremap <silent>[menu]o :Unite -silent -winheight=17 -start-insert menu:files<C
 
 " file searching menu {{{
 
+" Ack/grep
+nnoremap <leader>ac :<C-u>UniteWithCursorWord -start-insert grep:.:--word-regexp<CR>
+nnoremap <leader>aC :<C-u>UniteWithCursorWord -start-insert -no-quit grep:.:--word-regexp<CR>
+nnoremap <leader>al :<C-u>Unite -start-insert grep:.<CR>
+nnoremap <leader>aL :<C-u>Unite -start-insert -no-quit grep:.<CR>
+
 let g:unite_source_menu_menus.grep = {
     \ 'description' : '           search files
         \                                          ⌘ [space]a',
     \}
 let g:unite_source_menu_menus.grep.command_candidates = [
     \['▷ grep current word (ag → ack → grep)                        ⌘ ,ac',
-        \'UniteWithCursorWord grep'],
+        \'UniteWithCursorWord -start-insert grep:.:--word-regexp'],
+    \['▷ grep current word (ag → ack → grep, persist)               ⌘ ,aC',
+        \'UniteWithCursorWord -no-quit -start-insert grep:.:--word-regexp'],
     \['▷ grep (ag → ack → grep)                                     ⌘ ,al',
-        \'Unite grep'],
+        \'Unite -start-insert grep'],
+    \['▷ grep (ag → ack → grep, persist)                            ⌘ ,aL',
+        \'Unite -no-quit -start-insert grep'],
     \['▷ find',
         \'Unite find'],
     \['▷ locate',
