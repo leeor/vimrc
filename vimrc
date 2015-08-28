@@ -143,20 +143,12 @@ NeoBundle 'bling/vim-airline'
 
 NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
-" Clang {{{
-
-"NeoBundle 'Rip-Rip/clang_complete'
-
-" }}}
-
 " YouCompleteMe {{{
 
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'rdnetto/YCM-Generator'
 
 " }}}
-
-"NeoBundle 'ervandew/supertab'
 
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'altercation/vim-colors-solarized'
@@ -504,38 +496,6 @@ let g:ycm_key_invoke_completion = '<C-Space>'
 
 au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
 au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
-
-" }}}
-
-" clang-complete {{{
-
-set conceallevel=2
-set concealcursor=vin
-let g:clang_snippets=1
-let g:clang_conceal_snippets=1
-let g:clang_snippets_engine='clang_complete'
-let g:clang_complete_macros=1
-"let g:clang_make_default_keymappings=0
-let g:clang_auto_user_options='compile_commands.json,.clang_complete,path'
-
-"let g:clang_jumpto_declaration_key=""
-"let g:clang_jumpto_declaration_in_preview_key=""
-"let g:clang_jumpto_back_key=""
-
-" Complete options (disable preview scratch window, longest removed to aways show menu)
-set completeopt=menu,menuone
-
-" Limit popup menu height
-set pumheight=20
-
-"au FileType c,cpp,slang nmap <localleader>gd :<C-u>call g:ClangGotoDeclaration()<CR>
-
-" }}}
-
-" SuperTab {{{
-
-" completion fall-back
-let g:SuperTabDefaultCompletionType='<c-x><c-u><c-p>'
 
 " }}}
 
