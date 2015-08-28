@@ -1,9 +1,9 @@
 if has("gui_gtk2")
-    set guifont=Sauce\ Code\ Powerline\ 11
+    set guifont=Inconsolata-dz\ for\ Powerline\ 11
 elseif has("gui_macvim")
-    set guifont=Sauce\ Code\ Powerline:h12
+    set guifont=Inconsolata-dz\ for\ Powerline:h12
 elseif has ("gui_win32")
-    set guifont=Sauce\ Code\ Powerline:h12
+    set guifont=Inconsolata-dz\ for\ Powerline:h12
 end
 
 set noantialias
