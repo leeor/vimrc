@@ -502,9 +502,6 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 let g:ycm_key_invoke_completion = '<C-Space>'
 
-au FileType c,cpp,slang nmap <localleader>gd :<C-u>YcmCompleter GoTo<CR>
-au FileType c,cpp,slang nmap <localleader>gt :<C-u>YcmCompleter GetType<CR>
-
 " }}}
 
 " fugitive {{{
@@ -710,11 +707,14 @@ nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
 
 " source code menu {{{
 
-nnoremap <leader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline<CR>
-nnoremap <leader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
-nnoremap <leader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
-nnoremap <leader>si :<C-u>call rtags#SymbolInfo()<CR>
-nnoremap <leader>sI :<C-u>call rtags#ReindexFile()<CR>
+au FileType c,cpp nnoremap <localleader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline<CR>
+au FileType c,cpp nnoremap <localleader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
+au FileType c,cpp nnoremap <localleader>sd :<C-u>call rtags#JumpTo()<CR>
+au FileType c,cpp nnoremap <localleader>ss :<C-u>call rtags#IFindSymbols()<CR>
+au FileType c,cpp nnoremap <localleader>sS :<C-u>call rtags#FindSymbols()<CR>
+au FileType c,cpp nnoremap <localleader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
+au FileType c,cpp nnoremap <localleader>si :<C-u>call rtags#SymbolInfo()<CR>
+au FileType c,cpp nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<CR>
 
 let g:unite_source_menu_menus.source_code = {
     \ 'description' : '    source code menu
@@ -725,6 +725,12 @@ let g:unite_source_menu_menus.source_code.command_candidates = [
         \'Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline'],
     \['▷ search for references                                      ⌘ ,sr',
         \'Unite -auto-preview -start-insert rtags/references'],
+    \['▷ jump to definition                                         ⌘ ,sd',
+        \'call rtags#JumpTo()'],
+    \['▷ find symbol by name                                        ⌘ ,ss',
+        \'call rtags#RtagsIFindSymbols()'],
+    \['▷ find symbol by name (case sensitive)                       ⌘ ,sS',
+        \'call rtags#FindSymbols()'],
     \['▷ rename symbol under cursor                                 ⌘ ,sR',
         \'call rtags#RenameSymbolUnderCursor()'],
     \['▷ symbol info                                                ⌘ ,si',
