@@ -143,6 +143,8 @@ NeoBundle 'bling/vim-airline'
 
 NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
+NeoBundle 'lyuts/vim-rtags'
+
 " YouCompleteMe {{{
 
 NeoBundle 'Valloric/YouCompleteMe'
@@ -485,6 +487,12 @@ omap / <Plug>(easymotion-tn)
 
 " }}}
 
+" vim-rtags {{{
+
+let g:rtagsUseDefaultMappings = 0
+
+" }}}
+
 " YouCompleteMe {{{
 
 set completeopt-=preview
@@ -700,6 +708,34 @@ nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
 
 " }}}
 
+" source code menu {{{
+
+nnoremap <leader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline<CR>
+nnoremap <leader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
+nnoremap <leader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
+nnoremap <leader>si :<C-u>call rtags#SymbolInfo()<CR>
+nnoremap <leader>sI :<C-u>call rtags#ReindexFile()<CR>
+
+let g:unite_source_menu_menus.source_code = {
+    \ 'description' : '    source code menu
+        \                                      ⌘ [space]s',
+    \}
+let g:unite_source_menu_menus.source_code.command_candidates = [
+    \['▷ show outlines & tags (ctags)                               ⌘ ,st',
+        \'Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline'],
+    \['▷ search for references                                      ⌘ ,sr',
+        \'Unite -auto-preview -start-insert rtags/references'],
+    \['▷ rename symbol under cursor                                 ⌘ ,sR',
+        \'call rtags#RenameSymbolUnderCursor()'],
+    \['▷ symbol info                                                ⌘ ,si',
+        \'call rtags#SymbolInfo()'],
+    \['▷ reindex current file                                       ⌘ ,sI',
+        \'call rtags#ReindexFile()'],
+    \]
+
+
+" }}}
+
 " buffer internal searching menu {{{
 
 nnoremap <leader>fl :<C-u>Unite -auto-preview -start-insert line<CR>
@@ -717,8 +753,6 @@ let g:unite_source_menu_menus.searching.command_candidates = [
         \'Unite -auto-preview -start-insert line'],
     \['▷ search word under the cursor                               ⌘ [space]*',
         \'UniteWithCursorWord -no-split -auto-preview line'],
-    \['▷ search outlines & tags (ctags)                             ⌘ ,ft',
-        \'Unite -vertical -winwidth=40 -direction=topleft -toggle outline'],
     \['▷ search marks',
         \'Unite -auto-preview mark                                  ⌘ ,fm'],
     \['▷ search folds',
