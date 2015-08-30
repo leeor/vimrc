@@ -1,5 +1,5 @@
 if has("gui_gtk2")
-    set guifont=Inconsolata-dz\ for\ Powerline\ 11
+    set guifont=Inconsolata-dz\ Medium\ 11
 elseif has("gui_macvim")
     set guifont=Inconsolata-dz\ for\ Powerline:h12
 elseif has ("gui_win32")
