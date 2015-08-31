@@ -563,6 +563,8 @@ vnoremap <silent> <leader>gV :Gitv! --all<CR>
 
 " Unite {{{
 
+" defaults {{{
+
 call unite#filters#sorter_default#use(['sorter_rank'])
 
 let g:default_context = {
@@ -584,9 +586,17 @@ let g:unite_split_rule = 'botright'
 let g:unite_data_directory = s:dotvim.'/tmp/unite'
 call MakeDirIfNoExists(s:dotvim.'/tmp/unite')
 
+" }}}
+
+" time formats {{{
+
 let g:unite_source_buffer_time_format = '(%d-%m-%Y %H:%M:%S) '
 let g:unite_source_file_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
 let g:unite_source_directory_mru_time_format = '(%d-%m-%Y %H:%M:%S) '
+
+" }}}
+
+" grep {{{
 
 let g:unite_source_grep_max_candidates = 0
 let g:unite_source_rec_async_command = 'find'
@@ -601,6 +611,8 @@ if executable('ack')
     let g:unite_source_grep_recursive_opt=''
     let g:unite_source_grep_search_word_highlight = 1
 endif
+
+" }}}
 
 nnoremap <leader>ur :<C-u>UniteResume<CR>
 
@@ -707,36 +719,39 @@ nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
 
 " source code menu {{{
 
-au FileType c,cpp nnoremap <localleader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline<CR>
-au FileType c,cpp nnoremap <localleader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
-au FileType c,cpp nnoremap <localleader>sd :<C-u>call rtags#JumpTo()<CR>
-au FileType c,cpp nnoremap <localleader>ss :<C-u>call rtags#IFindSymbols()<CR>
-au FileType c,cpp nnoremap <localleader>sS :<C-u>call rtags#FindSymbols()<CR>
-au FileType c,cpp nnoremap <localleader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
-au FileType c,cpp nnoremap <localleader>si :<C-u>call rtags#SymbolInfo()<CR>
-au FileType c,cpp nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline outline<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sd :<C-u>call rtags#JumpTo()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>ss :<C-u>Unite -auto-preview -start-insert rtags/symbol:i<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sS :<C-u>Unite -auto-preview -start-insert rtags/symbol<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>si :<C-u>call rtags#SymbolInfo()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sp :<C-u>Unite -start-insert rtags/project<CR>
 
 let g:unite_source_menu_menus.source_code = {
     \ 'description' : '    source code menu
         \                                      ⌘ [space]s',
     \}
 let g:unite_source_menu_menus.source_code.command_candidates = [
-    \['▷ show outlines & tags (ctags)                               ⌘ ,st',
-        \'Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline -no-quit outline'],
-    \['▷ search for references                                      ⌘ ,sr',
+    \['▷ show outlines & tags (ctags)                               ⌘ [space]st',
+        \'Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline outline'],
+    \['▷ search for references                                      ⌘ [space]sr',
         \'Unite -auto-preview -start-insert rtags/references'],
-    \['▷ jump to definition                                         ⌘ ,sd',
+    \['▷ jump to definition                                         ⌘ [space]sd',
         \'call rtags#JumpTo()'],
-    \['▷ find symbol by name                                        ⌘ ,ss',
-        \'call rtags#RtagsIFindSymbols()'],
-    \['▷ find symbol by name (case sensitive)                       ⌘ ,sS',
-        \'call rtags#FindSymbols()'],
-    \['▷ rename symbol under cursor                                 ⌘ ,sR',
+    \['▷ find symbol by name                                        ⌘ [space]ss',
+        \'Unite -auto-preview -start-insert rtags/symbol:i'],
+    \['▷ find symbol by name (case sensitive)                       ⌘ [space]sS',
+        \'Unite -auto-preview -start-insert rtags/symbol'],
+    \['▷ rename symbol under cursor                                 ⌘ [space]sR',
         \'call rtags#RenameSymbolUnderCursor()'],
-    \['▷ symbol info                                                ⌘ ,si',
+    \['▷ symbol info                                                ⌘ [space]si',
         \'call rtags#SymbolInfo()'],
-    \['▷ reindex current file                                       ⌘ ,sI',
+    \['▷ reindex current file                                       ⌘ [space]sI',
         \'call rtags#ReindexFile()'],
+    \['▷ select project                                             ⌘ [space]sp',
+        \'call rtags#ProjectList()'],
     \]
 
 
