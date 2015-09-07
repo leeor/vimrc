@@ -2,7 +2,7 @@
 " .vimrc
 
 " with inspiration from:
-" https://github.com/joedicastro/dotfiles/blob/master/vim/vimrc#L1075
+" https://github.com/joedicastro/dotfiles/blob/master/vim/vimrc
 " https://github.com/zaiste/vimified/blob/20d3fa6a9648301fd9c5f86322614d59301868bc/vimrc
 
 set shell=/bin/zsh
