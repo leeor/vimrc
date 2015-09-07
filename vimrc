@@ -685,7 +685,7 @@ nnoremap <silent>[menu]a :Unite -silent menu:grep<CR>
 
 " buffers, tabs & windows menu {{{
 
-nnoremap <leader>nb :<C-u>Unite buffer<CR>
+nnoremap <leader>nb :<C-u>Unite -start-insert buffer<CR>
 nnoremap <leader>nB :<C-u>Unite tab<CR>
 nnoremap <leader>nl :<C-u>Unite location_list<CR>
 nnoremap <leader>nq :<C-u>Unite quickfix<CR>
