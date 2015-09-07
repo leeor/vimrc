@@ -1126,3 +1126,9 @@ exec ':so '.s:dotvim.'/functions/headerguard.vim'
 nnoremap <silent> <leader>rg :call AddHeaderGuard()<CR>
 
 " }}}
+
+" additional functions {{{
+
+exec ':so '.s:dotvim.'/functions/rename3.vim'
+
+" }}}
