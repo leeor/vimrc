@@ -727,6 +727,7 @@ au FileType c,cpp,cmake nnoremap <localleader>sS :<C-u>Unite -auto-preview -star
 au FileType c,cpp,cmake nnoremap <localleader>sR :<C-u>call rtags#RenameSymbolUnderCursor()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>si :<C-u>call rtags#SymbolInfo()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sP :<C-u>call rtags#PreprocessFile()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sp :<C-u>Unite -start-insert rtags/project<CR>
 
 let g:unite_source_menu_menus.source_code = {
@@ -750,6 +751,8 @@ let g:unite_source_menu_menus.source_code.command_candidates = [
         \'call rtags#SymbolInfo()'],
     \['▷ reindex current file                                       ⌘ [space]sI',
         \'call rtags#ReindexFile()'],
+    \['▷ preprocess current file                                    ⌘ [space]sP',
+        \'call rtags#PreprocessFile()'],
     \['▷ select project                                             ⌘ [space]sp',
         \'call rtags#ProjectList()'],
     \]
