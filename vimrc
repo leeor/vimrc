@@ -160,6 +160,7 @@ NeoBundle 'vim-scripts/argtextobj.vim'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'sjl/vitality.vim'
+NeoBundle 'mtth/scratch.vim'
 
 " local bundles {{{
 
