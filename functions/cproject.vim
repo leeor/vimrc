@@ -7,6 +7,10 @@ function! OpenProject()
 endfunction
 
 function! CompileProject()
-    let concurrency = system('/bin/echo -n $(cat /proc/cpuinfo | grep "^processor" | wc -l)')
+    if (filereadable('/proc/cpuinfo'))
+        let concurrency = system('/bin/echo -n $(cat /proc/cpuinfo | grep "^processor" | wc -l)')
+    elseif (system('/bin/echo -n $(uname)') ==# 'Darwin')
+        let concurrency = system('/bin/echo -n $(sysctl -n hw.ncpu)')
+    endif
     execute 'Dispatch' 'make' '-j'.concurrency '-C' g:current_project_dir
 endfunction
