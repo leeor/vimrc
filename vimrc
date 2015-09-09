@@ -162,6 +162,9 @@ NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mtth/scratch.vim'
 
+" undo on steroids
+NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {'commands': 'GundoToggle'}}
+
 " OS-specific bundles {{{
 
 let s:extraosrc = expand(s:dotvim . '/extra.' . s:uname . '.vimrc')
@@ -829,11 +832,16 @@ nnoremap <silent>[menu]i :Unite -silent menu:registers<CR>
 " }}}
 
 " text editing menu {{{
+
+nnoremap <leader>tg :<C-u>GundoToggle<CR>
+
 let g:unite_source_menu_menus.text = {
     \ 'description' : '           text editing
         \                                          ⌘ [space]e',
     \}
 let g:unite_source_menu_menus.text.command_candidates = [
+    \['▷ toggle gundo                                               ⌘ ,tg',
+        \'GundoToggle'],
     \['▷ toggle search results highlight                            ⌘ ,th',
         \'set invhlsearch'],
     \['▷ toggle line numbers                                        ⌘ ,tn',
@@ -1028,6 +1036,12 @@ au FileType go nmap gd <Plug>(go-def)
 " vim-gitgutter {{{
 
 let g:gitgutter_override_sign_column_highlight = 0
+
+" }}}
+
+" gundo {{{
+
+let g:gundo_preview_bottom = 1
 
 " }}}
 
