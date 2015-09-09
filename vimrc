@@ -409,6 +409,9 @@ set backspace=eol,start,indent
 " wrap in insert, visual, and normal modes:
 set whichwrap=h,l,~,[,],<,>
 
+nnoremap j gj
+nnoremap k gk
+
 " }}}
 
 " shortmess {{{
