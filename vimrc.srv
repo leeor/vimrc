@@ -1,0 +1,316 @@
+" vim:fdm=marker
+" .vimrc
+
+" Complatibility {{{
+
+set nocompatible
+set noedcompatible
+
+" never, ever, go into Ex mode
+nnoremap Q <nop>
+
+" }}}
+
+" Clear {{{
+
+filetype off
+autocmd!
+
+" }}}
+
+" NeoBundle {{{
+
+" NeoBundle auto-installation and setup {{{
+
+" Auto installing NeoBundle
+let iCanHazNeoBundle=1
+let neobundle_readme=expand(s:dotvim . '/bundle/neobundle.vim/README.md')
+if !filereadable(neobundle_readme)
+    echo "Installing NeoBundle.."
+    echo ""
+    silent !mkdir -p $HOME/.vim/bundle
+    silent !git clone https://github.com/Shougo/neobundle.vim $HOME/.vim/bundle/neobundle.vim
+    let iCanHazNeoBundle=0
+endif
+
+
+" Call NeoBundle
+if has('vim_starting')
+    set rtp+=$HOME/.vim/bundle/neobundle.vim/
+endif
+call neobundle#begin(expand($HOME.'/.vim/bundle/'))
+
+" is better if NeoBundle rules NeoBundle (needed!)
+NeoBundle 'Shougo/neobundle.vim'
+" }}}
+
+" Bundles {{{
+
+" Admin Git
+NeoBundle 'tpope/vim-fugitive'
+" Show git repository changes in the current file
+NeoBundle 'airblade/vim-gitgutter'
+" Git viewer
+NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
+            \ 'autoload':{'commands':'Gitv'}}
+
+NeoBundle 'scrooloose/syntastic'
+
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'altercation/vim-colors-solarized'
+
+" }}}
+
+call neobundle#end()
+
+" Auto install the Plugins {{{
+
+" First-time plugins installation
+if iCanHazNeoBundle == 0
+    echo "Installing Bundles, please ignore key map error messages"
+    echo ""
+    set nomore
+    NeoBundleInstall
+endif
+
+" Check if all of the plugins are already installed, in other case ask if we
+" want to install them (useful to add plugins in the .vimrc)
+NeoBundleCheck
+" }}}
+
+" }}}
+
+" Encodings {{{
+
+" a fix for any plugin that needs the locale to be set explicitly.
+let $LC_ALL="en_US.UTF-8"
+set encoding=utf-8
+
+" }}}
+
+" Basics {{{
+
+set tabpagemax=100
+
+" copy to Mac's clipboard
+set clipboard=unnamed
+
+" have 500 lines of command-line (etc) history:
+set history=500
+
+" remember all of these between sessions:
+" * don't save marks - doesn't work well with multiple vim instances saving to a
+"   single location.
+" * 10 search terms
+" * save upto 500 lines of registers
+" * don't save info for file in /mnt
+" * don't highlight previous search terms on start
+set viminfo='1000,f0,<500,/10,r/mnt,h
+
+" display the current mode and partially-typed commands in the status line:
+set showmode
+set showcmd
+
+" don't make it look like there are line breaks where there aren't:
+set nowrap
+
+" normally don't automatically format `text' as it is typed, IE only do this
+" with comments, at 79 characters:
+set formatoptions=crqn
+set textwidth=80
+
+set infercase
+
+set lazyredraw
+
+" have % bounce between angled brackets, as well as t'other kinds:
+set matchpairs+=<:>
+
+set laststatus=2
+
+set ttyfast
+set title
+
+" switch modes faster
+set ttimeoutlen=0
+
+set scrolloff=5
+
+" }}}
+
+" Tab & Indent settings {{{
+
+" use indents of 4 spaces, and have them copied down lines:
+set shiftwidth=4
+set shiftround
+set tabstop=4
+set softtabstop=4
+set expandtab
+set smarttab
+
+" enable filetype detection:
+filetype plugin indent on
+set autoindent
+set smartindent
+
+vnoremap > >gv
+vnoremap < <gv
+
+" }}}
+
+" Searching {{{
+
+" assume the /g flag on :s substitutions to replace all matches in a line:
+set gdefault
+
+" make searches case-insensitive, unless they contain upper-case letters:
+set ignorecase
+set smartcase
+
+" show the `best match so far' as search strings are typed:
+set incsearch
+set hlsearch
+
+" center vertically after searching
+nmap n nzz
+nmap N Nzz
+
+" }}}
+
+" Color scheme {{{
+
+if (&t_Co > 2)
+    set t_Co=16
+    set background=dark
+    colorscheme solarized
+endif
+
+" }}}
+
+" key behaviour & navigation {{{
+
+" set END behavior
+"noremap  <expr> [4~  (col('.') == match(getline('.'),    '\s*$')   ? '$'  : 'g_')
+noremap  <expr> [4~  '$'
+"vnoremap <expr> [4~  (col('.') == match(getline('.'),    '\s*$')   ? '$h' : 'g_')
+vnoremap <expr> [4~  '$'
+imap <End>  <C-o>[4~
+
+" set HOME behavior
+noremap <expr> <silent> OH col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> OH <C-o>OH
+noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> <Home> <C-o><Home>
+
+" Emacs bindings in command line mode
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
+
+set nostartofline
+
+" allow <BkSpc> to delete line breaks, beyond the start of the current
+" insertion, and over indentations:
+set backspace=eol,start,indent
+
+" have the h and l cursor keys wrap between lines (like <Space> and <BkSpc> do
+" by default), and ~ convert case over line breaks; also have the cursor keys
+" wrap in insert, visual, and normal modes:
+set whichwrap=h,l,~,[,],<,>
+
+nnoremap j gj
+nnoremap k gk
+
+" }}}
+
+" syntax highlighting {{{
+
+" have syntax highlighting in terminals which can display colours:
+if has('syntax') && (&t_Co > 2)
+    syntax on
+endif
+
+" }}}
+
+" Syntastic {{{
+
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-", " proprietary attribute \"app-", " proprietary attribute \"class\""]
+
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = '⚡'
+let g:syntastic_style_warning_symbol = '⚡'
+
+" }}}
+
+" Easymotion {{{
+
+" easymotion search
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" }}}
+
+" fugitive {{{
+
+nnoremap <Leader>gn :Unite output:echo\ system("git\ init")<CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>go :Gread<CR>
+nnoremap <Leader>gR :Gremove<CR>
+nnoremap <Leader>gm :Gmove<Space>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gB :Gbrowse<CR>
+nnoremap <Leader>gp :Git! push<CR>
+nnoremap <Leader>gP :Git! pull<CR>
+nnoremap <Leader>gi :Git!<Space>
+nnoremap <Leader>ge :Gedit<CR>
+nnoremap <Leader>gE :Gedit<Space>
+nnoremap <Leader>gl :exe "silent Glog <Bar> Unite -no-quit
+            \ quickfix"<CR>:redraw!<CR>
+nnoremap <Leader>gL :exe "silent Glog -- <Bar> Unite -no-quit
+            \ quickfix"<CR>:redraw!<CR>
+nnoremap <Leader>gt :!tig<CR>:redraw!<CR>
+nnoremap <Leader>gS :exe "silent !shipit"<CR>:redraw!<CR>
+nnoremap <Leader>gg :exe 'silent Ggrep -i '.input("Pattern: ")<Bar>Unite
+            \ quickfix -no-quit<CR>
+nnoremap <Leader>ggm :exe 'silent Glog --grep='.input("Pattern: ").' <Bar>
+            \Unite -no-quit quickfix'<CR>
+nnoremap <Leader>ggt :exe 'silent Glog -S='.input("Pattern: ").' <Bar>
+            \Unite -no-quit quickfix'<CR>
+
+nnoremap <Leader>ggc :silent! Ggrep -i<Space>
+
+" for the diffmode
+noremap <Leader>du :diffupdate<CR>
+
+if !exists(":Gdiffoff")
+    command Gdiffoff diffoff | q | Gedit
+endif
+noremap <Leader>dq :Gdiffoff<CR>
+
+" }}}
+
+" Gitv {{{
+
+let g:Gitv_OpenHorizontal = 1
+let g:Gitv_TruncateCommitSubjects = 1
+let g:Gitv_PromptToDeleteMergeBranch = 1
+let g:Gitv_WipeAllOnClose = 1
+let g:Gitv_DoNotMapCtrlKey = 1
+cabbrev gitv Gitv
+
+nnoremap <silent> <leader>gv :Gitv --all<CR>
+nnoremap <silent> <leader>gV :Gitv! --all<CR>
+vnoremap <silent> <leader>gV :Gitv! --all<CR>
+
+" }}}
+
+" vim-gitgutter {{{
+
+let g:gitgutter_override_sign_column_highlight = 0
+
+" }}}
+
+set secure
