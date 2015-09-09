@@ -405,7 +405,7 @@ set nostartofline
 set backspace=eol,start,indent
 
 " have the h and l cursor keys wrap between lines (like <Space> and <BkSpc> do
-" by default), and ~ covert case over line breaks; also have the cursor keys
+" by default), and ~ convert case over line breaks; also have the cursor keys
 " wrap in insert, visual, and normal modes:
 set whichwrap=h,l,~,[,],<,>
 
