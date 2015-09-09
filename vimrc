@@ -267,6 +267,14 @@ set ttimeoutlen=0
 
 set scrolloff=5
 
+" cursor change (block <-> line) in TMUX
+" allows cursor change in tmux mode
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+endif
+
+
 " }}}
 
 " Tab & Indent settings {{{
