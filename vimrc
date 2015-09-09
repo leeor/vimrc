@@ -355,6 +355,20 @@ highlight SignColumn ctermfg=4
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
 
+" line highlight {{{
+
+" Highlight current line
+autocmd WinLeave * set nocursorline
+" in current window
+autocmd WinEnter * set cursorline
+
+" }}}
+
+" highlight last inserted text {{{
+nnoremap gV `[v`]
+
+" }}}
+
 " }}}
 
 " key behaviour & navigation {{{
@@ -393,15 +407,6 @@ set whichwrap=h,l,~,[,],<,>
 
 set shortmess+=a
 set shortmess+=I
-
-" }}}
-
-" line highlight {{{
-
-" Highlight current line
-autocmd WinLeave * set nocursorline
-" in current window
-autocmd WinEnter * set cursorline
 
 " }}}
 
