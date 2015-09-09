@@ -25,6 +25,7 @@ autocmd!
 " }}}
 
 let s:dotvim = fnamemodify(globpath(&rtp, '.locator'), ':p:h')
+let s:uname = system('uname')[0:-2]
 
 " Utils {{{
 
@@ -102,7 +103,7 @@ NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':
 " File explorer (needed where ranger is not available)
 NeoBundleLazy 'Shougo/vimfiler', {'autoload' : { 'commands' : ['VimFiler', 'VimFilerExplorer']}}
 
-" Unite plugin that provides command line completition
+" Unite plugin that provides command line completion
 NeoBundle 'joedicastro/unite-cmdmatch'
 
 " Unite plugin that provides spell suggestions
@@ -159,8 +160,16 @@ NeoBundle 'Chiel92/vim-autoformat'
 NeoBundle 'vim-scripts/argtextobj.vim'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'sjl/vitality.vim'
 NeoBundle 'mtth/scratch.vim'
+
+" OS-specific bundles {{{
+
+let s:extraosrc = expand(s:dotvim . '/extra.' . s:uname . '.vimrc')
+if filereadable(s:extraosrc)
+    exec ':so ' . s:extraosrc
+endif
+
+" }}}
 
 " local bundles {{{
 

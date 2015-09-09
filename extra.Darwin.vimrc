@@ -1,0 +1,1 @@
+NeoBundle 'sjl/vitality.vim'
