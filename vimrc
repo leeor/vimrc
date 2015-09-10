@@ -226,6 +226,7 @@ set encoding=utf-8
 
 " Basics {{{
 
+" allow modified buffers to be hidden
 set hidden
 set autoread
 
