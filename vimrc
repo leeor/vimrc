@@ -154,7 +154,6 @@ NeoBundle 'rdnetto/YCM-Generator'
 " }}}
 
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Chiel92/vim-autoformat'
 NeoBundle 'vim-scripts/argtextobj.vim'
@@ -164,6 +163,12 @@ NeoBundle 'mtth/scratch.vim'
 
 " undo on steroids
 NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {'commands': 'GundoToggle'}}
+
+" colorschemes {{{
+
+NeoBundle 'altercation/vim-colors-solarized'
+
+" }}}
 
 " OS-specific bundles {{{
 
@@ -274,7 +279,6 @@ if exists('$TMUX')
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
 
-
 " }}}
 
 " Tab & Indent settings {{{
@@ -350,6 +354,9 @@ nmap N Nzz
 if (&t_Co > 2)
     set t_Co=16
     set background=dark
+    if s:uname ==# "Linux"
+        let g:solarized_contrast="high"
+    endif
     colorscheme solarized
 endif
 
