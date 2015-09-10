@@ -272,6 +272,8 @@ set ttyfast
 set title
 
 " switch modes faster
+set notimeout
+set ttimeout
 set ttimeoutlen=0
 
 set scrolloff=5
