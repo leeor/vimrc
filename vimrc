@@ -167,18 +167,18 @@ NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {'commands': 'GundoToggle'}}
 
 " OS-specific bundles {{{
 
-let s:extraosrc = expand(s:dotvim . '/extra.' . s:uname . '.vimrc')
-if filereadable(s:extraosrc)
-    exec ':so ' . s:extraosrc
+let s:os_bundles = expand(s:dotvim . '/' . s:uname . '.bundles')
+if filereadable(s:os_bundles)
+    exec ':so ' . s:os_bundles
 endif
 
 " }}}
 
 " local bundles {{{
 
-let s:extrarc = expand(s:dotvim . '/extra.vimrc')
-if filereadable(s:extrarc)
-    exec ':so ' . s:extrarc
+let s:local_bundles = expand(s:dotvim . '/local.bundles')
+if filereadable(s:local_bundles)
+    exec ':so ' . s:local_bundles
 endif
 
 " }}}
@@ -1159,7 +1159,7 @@ nnoremap <silent> <leader>tc :call AutocloseToggle()<CR>
 " trailing space cleanup (don't override current search)
 nnoremap <silent> <leader>rt :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<CR>
 
-" header guard {{{
+" header guard {{{z
 
 exec ':so '.s:dotvim.'/functions/headerguard.vim'
 nnoremap <silent> <leader>rg :call AddHeaderGuard()<CR>
@@ -1169,5 +1169,19 @@ nnoremap <silent> <leader>rg :call AddHeaderGuard()<CR>
 " additional functions {{{
 
 exec ':so '.s:dotvim.'/functions/rename3.vim'
+
+" }}}
+
+" os-specific and local config {{{
+
+let s:os_vimrc = expand(s:dotvim . '/' . s:uname . '.vimrc')
+if filereadable(s:os_vimrc)
+    exec ':so ' . s:os_vimrc
+endif
+
+let s:local_vimrc = expand(s:dotvim . '/local.vimrc')
+if filereadable(s:local_vimrc)
+    exec ':so ' . s:local_vimrc
+endif
 
 " }}}
