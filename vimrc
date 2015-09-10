@@ -1159,7 +1159,7 @@ nnoremap <silent> <leader>tc :call AutocloseToggle()<CR>
 " trailing space cleanup (don't override current search)
 nnoremap <silent> <leader>rt :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<CR>
 
-" header guard {{{z
+" header guard {{{
 
 exec ':so '.s:dotvim.'/functions/headerguard.vim'
 nnoremap <silent> <leader>rg :call AddHeaderGuard()<CR>
