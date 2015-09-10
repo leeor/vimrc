@@ -1105,7 +1105,7 @@ augroup filetype
     autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
 augroup END
 
-autocmd! BufWritePost vimrc :so %
+autocmd! BufWritePost vimrc :so $MYVIMRC
 
 " when we reload, tell vim to restore the cursor to the saved position
 autocmd! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") |
