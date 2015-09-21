@@ -226,6 +226,9 @@ set encoding=utf-8
 
 " Basics {{{
 
+set hidden
+set autoread
+
 set tabpagemax=100
 
 " copy to Mac's clipboard
