@@ -759,7 +759,9 @@ nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
 
 " }}}
 
-" source code menu {{{
+" source code menu {{
+
+exec ':so '.s:dotvim.'/functions/cproject.vim'
 
 au FileType c,cpp,cmake nnoremap <localleader>st :<C-u>Unite -start-insert -vertical -winwidth=40 -direction=topleft -toggle -buffer-name=outline outline<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sr :<C-u>Unite -auto-preview -start-insert rtags/references<CR>
@@ -771,6 +773,7 @@ au FileType c,cpp,cmake nnoremap <localleader>si :<C-u>call rtags#SymbolInfo()<C
 au FileType c,cpp,cmake nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sP :<C-u>call rtags#PreprocessFile()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sp :<C-u>Unite -start-insert rtags/project<CR>
+au FileType c,cpp,cmake nnoremap <localleader>sb :<C-u>call CompileProject()<CR>
 
 let g:unite_source_menu_menus.source_code = {
     \ 'description' : '    source code menu
@@ -797,8 +800,10 @@ let g:unite_source_menu_menus.source_code.command_candidates = [
         \'call rtags#PreprocessFile()'],
     \['▷ select project                                             ⌘ [space]sp',
         \'call rtags#ProjectList()'],
+    \['▷ build project                                              ⌘ [space]sb',
+        \'call CompileProject()'],
     \]
-
+nnoremap <silent>[menu]s :Unite -silent menu:source_code<CR>
 
 " }}}
 
@@ -1076,14 +1081,11 @@ let g:gundo_preview_bottom = 1
 
 " Auto commands {{{
 
-exec ':so '.s:dotvim.'/functions/cproject.vim'
-
 augroup filetype
     autocmd BufNewFile,BufRead *.txt setlocal filetype=human
     autocmd BufNewFile,BufRead CMake*.txt setlocal filetype=cmake
     autocmd BufNewFile,BufRead *.json setlocal filetype=javascript
     autocmd BufNewFile,BufReadPost *.md setlocal filetype=markdown
-    autocmd BufReadPost CMakeLists.txt call OpenProject()
 
     " in human-language files, automatically format everything at 72 chars:
     autocmd FileType human setlocal formatoptions+=t textwidth=80 spell spelllang=en_gb
