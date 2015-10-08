@@ -157,8 +157,14 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Chiel92/vim-autoformat'
 NeoBundle 'vim-scripts/argtextobj.vim'
+
+" tmux {{{
+
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'christoomey/vim-tmux-navigator'
+
+" }}}
+
 NeoBundle 'mtth/scratch.vim'
 
 " undo on steroids
@@ -170,20 +176,20 @@ NeoBundle 'altercation/vim-colors-solarized'
 
 " }}}
 
-" OS-specific bundles {{{
-
-let s:os_bundles = expand(s:dotvim . '/' . s:uname . '.bundles')
-if filereadable(s:os_bundles)
-    exec ':so ' . s:os_bundles
-endif
-
-" }}}
-
 " local bundles {{{
 
 let s:local_bundles = expand(s:dotvim . '/local.bundles')
 if filereadable(s:local_bundles)
     exec ':so ' . s:local_bundles
+endif
+
+" }}}
+
+" OS-specific bundles {{{
+
+let s:system_bundles = expand(s:dotvim . '/'.Chomp(tolower(system("uname"))).'.bundles')
+if filereadable(s:system_bundles)
+    exec ':so ' . s:system_bundles
 endif
 
 " }}}
@@ -1191,7 +1197,7 @@ exec ':so '.s:dotvim.'/functions/rename3.vim'
 
 " os-specific and local config {{{
 
-let s:os_vimrc = expand(s:dotvim . '/' . s:uname . '.vimrc')
+let s:os_vimrc = expand(s:dotvim . '/' . Chomp(tolower(system("uname"))) . '.vimrc')
 if filereadable(s:os_vimrc)
     exec ':so ' . s:os_vimrc
 endif
