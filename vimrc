@@ -400,12 +400,14 @@ noremap  <expr> [4~  '$'
 "vnoremap <expr> [4~  (col('.') == match(getline('.'),    '\s*$')   ? '$h' : 'g_')
 vnoremap <expr> [4~  '$'
 imap <End>  <C-o>[4~
+imap <C-e>  <C-o>[4~
 
 " set HOME behavior
 noremap <expr> <silent> OH col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 imap <silent> OH <C-o>OH
 noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
 imap <silent> <Home> <C-o><Home>
+imap <silent> <C-a> <C-o><Home>
 
 " Emacs bindings in command line mode
 cnoremap <c-a> <home>
