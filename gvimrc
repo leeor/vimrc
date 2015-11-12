@@ -2,11 +2,11 @@ if has("gui_gtk2")
     set guifont=Inconsolata-dz\ Medium\ 11
 elseif has("gui_macvim")
     set guifont=Inconsolata-dz\ for\ Powerline:h12
+    set background=dark
+    colorscheme solarized
 elseif has ("gui_win32")
     set guifont=Inconsolata-dz\ for\ Powerline:h12
 end
-
-set noantialias
 
 set lines=53
 set columns=120
