@@ -767,7 +767,7 @@ nnoremap <silent>[menu]n :Unite -silent menu:navigation<CR>
 
 " }}}
 
-" source code menu {{
+" source code menu {{{
 
 exec ':so '.s:dotvim.'/functions/cproject.vim'
 
@@ -782,6 +782,15 @@ au FileType c,cpp,cmake nnoremap <localleader>sI :<C-u>call rtags#ReindexFile()<
 au FileType c,cpp,cmake nnoremap <localleader>sP :<C-u>call rtags#PreprocessFile()<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sp :<C-u>Unite -start-insert rtags/project<CR>
 au FileType c,cpp,cmake nnoremap <localleader>sb :<C-u>call CompileProject()<CR>
+
+au FileType go nmap <localleader>sI <Plug>(go-implements)
+au FileType go nmap <localleader>si <Plug>(go-info)
+au FileType go nmap <localleader>sr <Plug>(go-callers)
+au FileType go nmap <localleader>sR <Plug>(go-rename)
+au FileType go nmap <localleader>sb <Plug>(go-build)
+au FileType go nmap <localleader>st <Plug>(go-test)
+au FileType go nmap <localleader>sd <Plug>(go-def)
+au FileType go nmap <localleader>sc <Plug>(go-coverage)
 
 let g:unite_source_menu_menus.source_code = {
     \ 'description' : '    source code menu
@@ -1036,6 +1045,8 @@ nnoremap <silent>[menu]v :Unite menu:vim -silent -start-insert<CR>
 
 " }}}
 
+" }}}
+
 " Vimfiler {{{
 
 let g:vimfiler_as_default_explorer = 1
@@ -1060,16 +1071,6 @@ nnoremap <silent> <localleader>em :<C-u>MarkedOpen<CR>
 " vim-go {{{
 
 let g:go_fmt_command = "goimports"
-
-au FileType go nmap <localleader>gs <Plug>(go-implements)
-au FileType go nmap <localleader>gi <Plug>(go-info)
-au FileType go nmap <localleader>gr <Plug>(go-run)
-au FileType go nmap <localleader>gb <Plug>(go-doc)
-"au FileType go nmap <localleader>gt <Plug>(go-test)
-au FileType go nmap <localleader>gd <Plug>(go-def-tab)
-au FileType go nmap <localleader>gc <Plug>(go-coverage)
-au FileType go nmap <localleader>ge <Plug>(go-rename)
-au FileType go nmap gd <Plug>(go-def)
 
 " }}}
 
