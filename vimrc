@@ -430,8 +430,13 @@ set backspace=eol,start,indent
 " wrap in insert, visual, and normal modes:
 set whichwrap=h,l,~,[,],<,>
 
+" make j & k move up and down by display line, not real lines (differs when
+" lines wrap)
 nnoremap j gj
 nnoremap k gk
+
+" allow movement past end of line in virtual block mode
+set ve+=block
 
 " }}}
 
