@@ -365,7 +365,7 @@ nmap N Nzz
 
 if (&t_Co > 2)
     set t_Co=16
-    set background=dark
+    set background=light
     if s:uname ==# "Linux"
         let g:solarized_contrast="high"
     endif
@@ -497,7 +497,7 @@ set comments+=b:\"
 
 set laststatus=2
 let g:airline_powerline_fonts=1
-let g:airline_theme='dark'
+let g:airline_theme='light'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
