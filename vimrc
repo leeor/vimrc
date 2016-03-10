@@ -141,6 +141,7 @@ NeoBundle 'kshenoy/vim-signature'
 
 " A better looking status line
 NeoBundle 'bling/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
 
 NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
@@ -502,7 +503,7 @@ set comments+=b:\"
 
 set laststatus=2
 let g:airline_powerline_fonts=1
-let g:airline_theme='light'
+let g:airline_theme='solarized'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
