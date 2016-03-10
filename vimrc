@@ -1119,6 +1119,9 @@ augroup filetype
     " in makefiles, don't expand tabs to spaces, since actual tab characters are
     " needed:
     autocmd FileType make setlocal noexpandtab shiftwidth=4 tabstop=4
+
+    " auto format XML files with xmllint
+    autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 augroup END
 
 autocmd! BufWritePost vimrc :so $MYVIMRC
