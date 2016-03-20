@@ -1122,6 +1122,9 @@ augroup filetype
 
     " auto format XML files with xmllint
     autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+
+    " auto format json files with xmllint
+    autocmd FileType json setlocal equalprg=json_pp
 augroup END
 
 autocmd! BufWritePost vimrc :so $MYVIMRC
