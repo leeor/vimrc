@@ -361,7 +361,7 @@ nmap N Nzz
 
 if (&t_Co > 2)
     set t_Co=16
-    set background=light
+    set background=dark
     if s:uname ==# "Linux"
         let g:solarized_contrast="high"
     endif
