@@ -86,7 +86,7 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'Shougo/unite.vim'
 
 " Unite sources
-NeoBundleLazy 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
+NeoBundle 'Shougo/unite-outline'
 NeoBundleLazy 'tsukkee/unite-help', {'autoload':{'unite_sources':'help'}}
 NeoBundleLazy 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' :
